@@ -51,7 +51,7 @@ public class Messages {
 			case Note : 
 				if(reponse.equals("mettre un 0 d'office")) intro("... Bon, nous avons juste démarré du mauvais pied hein ! Nul besoin de s'énerver, n'est-ce pas.. ?", "Nous avons démarré du mauvais pied. Prenons un café, et oublions toute forme de corruption. Tout se passera bien. Un nuage sur votre café ?");
 				else if(reponse.equalsIgnoreCase("mettre un 20 d'office")) intro("Oh voyons, ce n'est pas très fair-play de mettre un 20 d'office alors que vous n'avez pas même pas joué au jeu, haha !", "Jouez d'abord quelques niveaux, et après nous en reparlerons. Ohlala, mais que ces zombies sont intelligents..");
-				else { intro("Hahaha, ce n'est pas la réponse attendue, allons ! Reprenez depuis le début : "); return false; }
+				else { intro("Hahaha, ce n'est pas la réponse attendue, allons ! Reprenez depuis le début."); return false; }
 				break;
 		}
 		return true;

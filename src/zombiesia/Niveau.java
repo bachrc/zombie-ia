@@ -16,6 +16,7 @@ import jlibs.core.lang.Ansi;
  */
 public class Niveau {
 	private char[][] plateau;
+	private int hauteur, largeur;
 	private int xJoueur, yJoueur;
 	private int xArrivee, yArrivee;
 	private ArrayList<Zombie> al;
@@ -31,8 +32,8 @@ public class Niveau {
 			throw new InvalidValueException("Niveau inexistant.");
 		
 		Scanner sc = new Scanner(level);
-		int hauteur = sc.nextInt();
-		int largeur = sc.nextInt();
+		this.hauteur = sc.nextInt();
+		this.largeur = sc.nextInt();
 		
 		this.plateau = new char[largeur][hauteur];
 		sc.nextLine();
@@ -49,20 +50,17 @@ public class Niveau {
 					case '|':
 						this.plateau[lineCount][i] = '|'; break;
 					case '_':
-						this.plateau[lineCount][i] = '_'; break;
+						this.plateau[lineCount][i] = '-'; break;
 					case 'Z':
 						this.al.add(new Zombie(i, lineCount));
-						this.plateau[lineCount][i] = 'Z';
 						break;
 					case 'A':
 						this.xArrivee = i;
 						this.yArrivee = lineCount;
-						this.plateau[lineCount][i] = 'A';
 						break;
 					case 'J':
 						this.xJoueur = i;
 						this.yJoueur = lineCount;
-						this.plateau[lineCount][i] = 'J';
 						break;
 					default:
 						throw new InvalidValueException("Caractère invalide.");
@@ -76,6 +74,14 @@ public class Niveau {
 		}
 	}
 	
+	public boolean isZombieHere(int x, int y) {
+		for(Zombie z:this.al)
+			if(z.x == x && z.y == y)
+				return true;
+		
+		return false;
+	}
+	
 	public String toString() {
 		String retour = "";
 		Ansi joueur, zombie, arrivee, normal;
@@ -84,16 +90,14 @@ public class Niveau {
 		arrivee = new Ansi(Ansi.Attribute.BRIGHT, Ansi.Color.WHITE, Ansi.Color.RED);
 		normal = new Ansi(Ansi.Attribute.BRIGHT, Ansi.Color.BLACK, Ansi.Color.CYAN);
 		
-		for (char[] plateau1 : this.plateau) {
-			for (int j = 0; j < plateau1.length; j++) retour += "+---"; retour += "+\n";
-			for (int j = 0; j < plateau1.length; j++) {
+		for (int y = 0; y < hauteur; y++) {
+			for (int x = 0; x < largeur; x++) retour += "+---"; retour += "+\n";
+			for (int x = 0; x < largeur; x++) {
 				retour += "|";
-				switch(plateau1[j]) {
-					case 'J' : retour += joueur.colorize(" J "); break;
-					case 'Z' : retour += zombie.colorize(" Z "); break;
-					case 'A' : retour += arrivee.colorize(" A "); break;
-					default : retour += normal.colorize(" " + plateau1[j] + " ");
-				}
+				if(this.xJoueur == x && this.yJoueur == y) retour += joueur.colorize(" J ");
+				else if(this.xArrivee == x && this.yArrivee == y) retour += arrivee.colorize(" A ");
+				else if(isZombieHere(x, y)) retour += zombie.colorize(" Z ");
+				else retour += normal.colorize(" " + plateau[y][x] + " ");
 			}
 			retour += "|\n";
 		}
