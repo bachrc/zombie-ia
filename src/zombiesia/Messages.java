@@ -26,10 +26,6 @@ public class Messages {
 			this.messages = mess;
 		}
 		
-		public String[] getMessages() {
-			return this.messages;
-		}
-		
 		public void message() {
 			introArray(this.messages);
 		}
