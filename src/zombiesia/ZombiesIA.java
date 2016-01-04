@@ -5,8 +5,10 @@
  */
 package zombiesia;
 
+import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import zombiesia.Messages.GroupeMessages;
+import static zombiesia.Messages.intro;
 import zombiesia.Niveau.InvalidValueException;
 
 /**
@@ -24,44 +26,23 @@ public class ZombiesIA {
 		} catch (InvalidValueException e) {
 			System.err.printf(e.getMessage());
 		}
-	}
-	
-	
-		
-	
+	}	
 	
 	public String toString() {
 		return niveau.toString();
 	}
 	
 	public static void main(String[] args) {
-		ZombiesIA jeu = new ZombiesIA(1, 1);		
+		ZombiesIA jeu = new ZombiesIA(1, 1);
+		String reponse;
 		
-		intro(40, "JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",	"Vraiment, elle est révolutionnaire.", "L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur.");
+		//intro("JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",	"Vraiment, elle est révolutionnaire.", "L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur.", "Mais vous avez un but bien précis, n'est-ce pas ? En effet, face à un jeu qui vous a déjà tant amusé, codé avec tant d'amour, vous n'avez qu'un seul choix...", "Qu'allez-vous donc faire ?", "(La bonne réponse est \"mettre un 20 d'office\")");
+		GroupeMessages.Intro.message();
+		do {
+			reponse = Messages.input("Que faire ?");
+		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
 		
+		GroupeMessages.Suite.message();
 		System.out.println(jeu);
-	}
-	
-	private static void intro(int longueur, String... messages) {
-		/*final String[] messages = {"JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",
-			"Vraiment, elle est révolutionnaire.",
-			"L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur."
-		};
-		int longueur = 40; */
-		try {
-			for(String mess:messages) {
-				String[] lines = WordUtils.wrap(mess, longueur, "\n", true).split("\n");
-				System.out.println("--" + StringUtils.repeat(' ', longueur) + "--");
-				for(String l:lines) 
-					System.out.println("--" + StringUtils.center(l, longueur) + "--");
-
-				System.out.println(StringUtils.repeat('-', longueur + 4));
-
-				Thread.sleep(mess.length() * 45);
-			}
-		}
-		catch(Exception e) {
-			
-		}
 	}
 }
