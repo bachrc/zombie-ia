@@ -5,6 +5,7 @@
  */
 package zombiesia;
 
+import java.util.Scanner;
 import zombiesia.Messages.GroupeMessages;
 import zombiesia.Niveau.InvalidValueException;
 
@@ -26,9 +27,24 @@ public class ZombiesIA {
 		}
 	}	
 	
-/*	public boolean play() {
-		
-	} */
+	public boolean play() {
+		Scanner sc = new Scanner(System.in);
+		char dir;
+		while(true) {
+			if(niveau.isArrived()) return true;
+			else if(niveau.isDead()) return false;
+			else {
+				System.out.println(niveau);
+				do {
+					System.out.print("Direction : ");
+					dir = sc.nextLine().charAt(0);
+				}while(dir != 'z' && dir != 's' && dir != 'q' && dir != 'd' && dir != ' ');
+				
+				this.niveau.movePlayer(dir);
+				this.niveau.moveZombies();
+			}
+		}
+	}
 	
 	public String toString() {
 		return niveau.toString();
@@ -37,13 +53,14 @@ public class ZombiesIA {
 	public static void main(String[] args) {
 		ZombiesIA jeu = new ZombiesIA(1, 1);
 		String reponse;
-		
+/*		
 		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
-		
 		GroupeMessages.Suite.message();
-		System.out.println(jeu);
+*/		
+		Messages.reponse(Messages.TypeReponse.Niveau1, Boolean.toString(jeu.play()));
+		
 	}
 }

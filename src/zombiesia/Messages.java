@@ -33,12 +33,12 @@ public class Messages {
 	
 	public enum TypeReponse {
 		Note,
-		Volonte
+		Niveau1
 	}
 	
 	public static String input(String intitule) {
 		Scanner sc = new Scanner(System.in);
-		String retour = "";
+		String retour;
 		System.out.print("-- " + intitule + " : ");
 		retour = sc.nextLine();
 		System.out.println(StringUtils.repeat('-', longueur + 4));
@@ -53,6 +53,9 @@ public class Messages {
 				else if(reponse.equalsIgnoreCase("mettre un 20 d'office")) intro("Oh voyons, ce n'est pas très fair-play de mettre un 20 d'office alors que vous n'avez pas même pas joué au jeu, haha !", "Jouez d'abord quelques niveaux, et après nous en reparlerons. Ohlala, mais que ces zombies sont intelligents..");
 				else { intro("Hahaha, ce n'est pas la réponse attendue, allons ! Reprenez depuis le début."); return false; }
 				break;
+			case Niveau1 :
+				if(reponse.equalsIgnoreCase("true")) intro("Impressionnant, votre dextérité quand vous avez fui ce zombie amorphe..", "Ne prends pas la grosse tête cependant. Oh, ça ne te dérange pas que l'on se tutoie ? Nous avons vécu pas mal de choses ensemble déjà...");
+				else { intro("Quelle tristesse... Ce zombie fatigué, du PREMIER NIVEAU, dans la difficulté la plus faible, aura eu raison de vous.", "Avouez. C'était juste à but de test, n'est-ce pas ?",  "Genre \"Ohlala, qu'est-ce qu'il se passe si j'me fais toucher par ce zombiiie !\"", "Bon. Maintenant que votre curiosité est satisfaite, réessayez. Sans déconner."); System.exit(0); }
 		}
 		return true;
 	}
