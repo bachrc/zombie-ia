@@ -292,7 +292,7 @@ public class Niveau {
 		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
 			this.x = x;
 			this.y = y;
-			this.distance = Math.abs(x - xArrivee) + Math.abs(y - yArrivee);
+			this.distance = Math.abs(x - xJoueur) + Math.abs(y - yJoueur);
 			this.cout = (diagonale ? 14 : 10);
 			this.parent = parent;
 		}
