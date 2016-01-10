@@ -27,7 +27,6 @@ public class Niveau {
 	public Niveau(int numero) throws InvalidValueException {
 		this.zombies = new ArrayList<>();
 		this.loadLevel(numero);
-		this.difficulte = 2;
 		this.alive = true;
 	}
 
@@ -40,6 +39,7 @@ public class Niveau {
 		Scanner sc = new Scanner(level);
 		this.hauteur = sc.nextInt();
 		this.largeur = sc.nextInt();
+		this.difficulte = sc.nextInt();
 
 		this.plateau = new char[largeur][hauteur];
 		sc.nextLine();
@@ -90,24 +90,20 @@ public class Niveau {
 	public void movePlayer(char dir) {
 		switch (dir) {
 			case 'z':
-				if (isCaseFree(xJoueur, yJoueur - 1)) {
+				if (isCaseFree(xJoueur, yJoueur - 1)) 
 					yJoueur--;
-				}
 				break;
 			case 's':
-				if (isCaseFree(xJoueur, yJoueur + 1)) {
+				if (isCaseFree(xJoueur, yJoueur + 1)) 
 					yJoueur++;
-				}
 				break;
 			case 'q':
-				if (isCaseFree(xJoueur - 1, yJoueur)) {
+				if (isCaseFree(xJoueur - 1, yJoueur)) 
 					xJoueur--;
-				}
 				break;
 			case 'd':
-				if (isCaseFree(xJoueur + 1, yJoueur)) {
+				if (isCaseFree(xJoueur + 1, yJoueur)) 
 					xJoueur++;
-				}
 				break;
 		}
 	}
@@ -143,6 +139,12 @@ public class Niveau {
 
 	public boolean isDead() {
 		return !alive;
+	}
+	
+	public void levelActions() {
+		if(isZombieHere(xJoueur, yJoueur)) {
+			alive = false;
+		}
 	}
 
 	public String toString() {
@@ -192,7 +194,8 @@ public class Niveau {
 			ouvert.remove(n);
 			ferme.add(n);
 			
-			voisins = getVoisins(n, false);
+			voisins = getVoisins(n, (this.difficulte % 2 == 1));
+			
 			for(Noeud v:voisins) {
 				if(v.x == xGoal && v.y == yGoal)
 					return v;
@@ -248,10 +251,10 @@ public class Niveau {
 	
 	public ArrayList<Noeud> getVoisins(Noeud n, boolean diagonales) {
 		ArrayList<Noeud> retour = new ArrayList<>();
-		int[] xs = {n.x-1, n.x, n.x, n.x+1};
-		int[] ys = {n.y, n.y-1, n.y+1, n.y};
+		int[] xs = {n.x-1, n.x, n.x, n.x+1, n.x-1, n.x+1, n.x-1, n.x+1};
+		int[] ys = {n.y, n.y-1, n.y+1, n.y, n.y-1, n.y-1, n.y+1, n.y+1};
 		
-		for(int i = 0; i < xs.length; i++)
+		for(int i = 0; i < (diagonales ? 8 : 4); i++)
 			if(isCaseFree(xs[i], ys[i])) retour.add(new Noeud(xs[i], ys[i], n));
 
 		return retour;
@@ -272,7 +275,7 @@ public class Niveau {
 		
 		public void move(int x, int y) {
 			this.tour++;
-			this.tour %= difficulte;
+			this.tour %= (difficulte <= 2 ? 1 : 2);
 			if(tour == 0) {
 				this.x = x;
 				this.y = y;

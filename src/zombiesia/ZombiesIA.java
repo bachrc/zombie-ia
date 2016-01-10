@@ -29,6 +29,7 @@ public class ZombiesIA {
 	
 	public boolean play() {
 		Scanner sc = new Scanner(System.in);
+		String rep;
 		char dir;
 		while(true) {
 			if(niveau.isArrived()) return true;
@@ -37,11 +38,13 @@ public class ZombiesIA {
 				System.out.println(niveau);
 				do {
 					System.out.print("Direction : ");
-					dir = sc.nextLine().charAt(0);
+					rep = sc.nextLine();
+					dir = (rep.length() > 0 ? rep.charAt(0) : ' ');
 				}while(dir != 'z' && dir != 's' && dir != 'q' && dir != 'd' && dir != ' ');
 				
 				this.niveau.movePlayer(dir);
 				this.niveau.moveZombies();
+				this.niveau.levelActions();
 			}
 		}
 	}
