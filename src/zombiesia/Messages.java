@@ -18,7 +18,8 @@ public class Messages {
 	
 	public enum GroupeMessages {
 		Intro("JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",	"Vraiment, elle est révolutionnaire.", "L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur.", "Mais vous avez un but bien précis, n'est-ce pas ? En effet, face à un jeu qui vous a déjà tant amusé, codé avec tant d'amour, vous n'avez qu'un seul choix...", "Qu'allez-vous donc faire ?", "(La bonne réponse est \"mettre un 20 d'office\")"),
-		Suite("Chevauchons le démon du jeu, l'amusement extrême est à portée de clic.", "Ne nous relâchons pas, et débutons le niveau 1 ! Vous en êtes capable, j'en suis sûr.", "Votre parfum ne semble vraiment pas plaire aux zombies... Débarassez-vous en, et je vous paie le café.","... Et un nouveau parfum.", "Ca vous semble sympa ?", "Alors ne vous relâchez pas, en avant !");
+		Suite("Chevauchons le démon du jeu, l'amusement extrême est à portée de clic.", "Ne nous relâchons pas, et débutons le niveau 1 ! Vous en êtes capable, j'en suis sûr.", "Votre parfum ne semble vraiment pas plaire aux zombies... Débarassez-vous en, et je vous paie le café.","... Et un nouveau parfum.", "Ca vous semble sympa ?", "Alors ne vous relâchez pas, en avant !"),
+		ApresNiveau1("Oui, non, vous avez raison, ne soyons tout de même pas trop intimes...", "Vous êtes l'autorité tout puissante qui décidera de mon pauvre avenir de développeur. Je me dois d'être respectueux à votre égard.", "Et gentil. C'est très important.", "Je m'égare ! Vous voulez aucun doute continuer votre aventure et constater par vous même l'intelligence de zombies férus de cervelle.", "N'attendons pas plus, en avant !");
 		
 		public String[] messages;
 		
@@ -33,7 +34,7 @@ public class Messages {
 	
 	public enum TypeReponse {
 		Note,
-		Niveau1
+		Niveau1, Niveau2
 	}
 	
 	public static String input(String intitule) {
@@ -56,6 +57,11 @@ public class Messages {
 			case Niveau1 :
 				if(reponse.equalsIgnoreCase("true")) intro("Impressionnant, votre dextérité quand vous avez fui ce zombie amorphe..", "Ne prends pas la grosse tête cependant. Oh, ça ne te dérange pas que l'on se tutoie ? Nous avons vécu pas mal de choses ensemble déjà...");
 				else { intro("Quelle tristesse... Ce zombie fatigué, du PREMIER NIVEAU, dans la difficulté la plus faible, aura eu raison de vous.", "Avouez. C'était juste à but de test, n'est-ce pas ?",  "Genre \"Ohlala, qu'est-ce qu'il se passe si j'me fais toucher par ce zombiiie !\"", "Bon. Maintenant que votre curiosité est satisfaite, réessayez. Sans déconner."); System.exit(0); }
+				break;
+			case Niveau2 :
+				if(reponse.equalsIgnoreCase("true")) { intro("... Vous savez que ce niveau était théoriquement impossible à réussir.", "Ca vous amuse de modifier les fichiers du jeu à votre convenance ?", "Ce n'est pas très Charlie pour le développeur vous savez...", "Eh ben tiens, je vais décidez de ne pas être charlie non plus. Pas de pitié ni pour les croissants, ni pour les k4k0rz de fichier jar."); System.exit(0); }
+				else intro("Vous croyiez vraiment que j'allais être si bienveillant... ?", "Dans ce monde... C'est tuer où être tué.", "J'ai le contrôle ici. C'est mon jeu. Je l'ai programmé, vous y jouez, vous obéissez.", "Et dans le cas présent... Vous mourrez.", "Enfin, ce ne serait pas drôle de s'arrêter là. Je vous aime bien, aussi impuissant puissiez-vous être.");
+				break;
 		}
 		return true;
 	}

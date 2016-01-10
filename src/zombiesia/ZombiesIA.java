@@ -16,12 +16,10 @@ import zombiesia.Niveau.InvalidValueException;
 public class ZombiesIA {
 	
 	private Niveau niveau;
-	private int difficulte;
 
-	public ZombiesIA(int difficulte, int niveau) {
+	public ZombiesIA(int niveau) {
 		try {
 			this.niveau = new Niveau(niveau);
-			this.difficulte = difficulte;
 		} catch (InvalidValueException e) {
 			System.err.printf(e.getMessage());
 		}
@@ -54,16 +52,18 @@ public class ZombiesIA {
 	}
 	
 	public static void main(String[] args) {
-		ZombiesIA jeu = new ZombiesIA(1, 1);
+		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
-/*		
+		
 		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
 		GroupeMessages.Suite.message();
-*/		
-		Messages.reponse(Messages.TypeReponse.Niveau1, Boolean.toString(jeu.play()));
 		
+		Messages.reponse(Messages.TypeReponse.Niveau1, Boolean.toString(jeu.play()));
+		GroupeMessages.ApresNiveau1.message();
+		jeu = new ZombiesIA(2);
+		Messages.reponse(Messages.TypeReponse.Niveau2, Boolean.toString(jeu.play()));
 	}
 }

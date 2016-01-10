@@ -41,10 +41,10 @@ public class Niveau {
 		this.largeur = sc.nextInt();
 		this.difficulte = sc.nextInt();
 
-		this.plateau = new char[largeur][hauteur];
+		this.plateau = new char[hauteur][largeur];
 		sc.nextLine();
 		int lineCount;
-		for (lineCount = 0; lineCount < this.plateau.length && sc.hasNextLine(); lineCount++) {
+		for (lineCount = 0; lineCount < hauteur && sc.hasNextLine(); lineCount++) {
 			char[] line = sc.nextLine().toCharArray();
 			if (line.length != largeur) {
 				throw new InvalidValueException("Largeur de la ligne " + (lineCount + 1) + " du niveau " + numero + " est de " + line.length + " au lieu de " + largeur);
@@ -83,7 +83,7 @@ public class Niveau {
 		}
 
 		if (hauteur != lineCount) {
-			throw new InvalidValueException("Nombre de lignes invalide.");
+			throw new InvalidValueException("Nombre de lignes invalide : Hauteur renseignée : " + hauteur + ", hauteur actuelle : " + lineCount);
 		}
 	}
 
