@@ -21,11 +21,13 @@ public class Niveau {
 	private int xJoueur, yJoueur;
 	private int xArrivee, yArrivee;
 	private ArrayList<Zombie> zombies;
+	private ArrayList<TNT> explosifs;
 	private int difficulte;
 	private boolean alive;
 
 	public Niveau(int numero) throws InvalidValueException {
 		this.zombies = new ArrayList<>();
+		this.explosifs = new ArrayList<>();
 		this.loadLevel(numero);
 		this.alive = true;
 	}
@@ -75,6 +77,10 @@ public class Niveau {
 						this.yJoueur = lineCount;
 						this.plateau[lineCount][i] = ' ';
 						break;
+					case 'T':
+						this.explosifs.add(new TNT(i, lineCount));
+						this.plateau[lineCount][i] = ' ';
+						break;
 					default:
 						throw new InvalidValueException("Caractère invalide.");
 				}
@@ -115,13 +121,25 @@ public class Niveau {
 				z.move(next.x, next.y);
 		}
 	}
+	
+	public void removeExplosive(int x, int y) {
+		for(int i = 0; i < this.explosifs.size(); i++)
+			if(explosifs.get(i).x == x && explosifs.get(i).y == y)
+				this.explosifs.remove(i);
+	}
 
 	public boolean isZombieHere(int x, int y) {
-		for (Zombie z : this.zombies) {
-			if (z.x == x && z.y == y) {
+		for (Zombie z : this.zombies) 
+			if (z.x == x && z.y == y) 
 				return true;
-			}
-		}
+
+		return false;
+	}
+	
+	public boolean isExplosiveHere(int x, int y) {
+		for (TNT t : this.explosifs) 
+			if (t.x == x && t.y == y) 
+				return true;
 
 		return false;
 	}
@@ -142,11 +160,17 @@ public class Niveau {
 	}
 	
 	public void levelActions() {
-		if(isZombieHere(xJoueur, yJoueur)) {
+		if(isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur))
 			alive = false;
-		}
+		
+		for(int i = 0; i < this.zombies.size(); i++)
+			if(isExplosiveHere(zombies.get(i).x,zombies.get(i).y)) {
+				removeExplosive(zombies.get(i).x,zombies.get(i).y);
+				this.zombies.remove(i--);
+			}
 	}
 
+	@Override
 	public String toString() {
 		String retour = "";
 		Ansi joueur, zombie, arrivee, normal;
@@ -168,6 +192,8 @@ public class Niveau {
 					retour += arrivee.colorize(" A ");
 				} else if (isZombieHere(x, y)) {
 					retour += zombie.colorize(" Z ");
+				} else if (isExplosiveHere(x, y)) { 
+					retour += normal.colorize(" T ");
 				} else {
 					retour += normal.colorize(" " + plateau[y][x] + " ");
 				}
@@ -255,7 +281,7 @@ public class Niveau {
 		int[] ys = {n.y, n.y-1, n.y+1, n.y, n.y-1, n.y-1, n.y+1, n.y+1};
 		
 		for(int i = 0; i < (diagonales ? 8 : 4); i++)
-			if(isCaseFree(xs[i], ys[i])) retour.add(new Noeud(xs[i], ys[i], n));
+			if(isCaseFree(xs[i], ys[i])) retour.add(new Noeud(xs[i], ys[i], n, i > 4));
 
 		return retour;
 	}
@@ -284,13 +310,13 @@ public class Niveau {
 	}
 
 	public class Noeud {
-
+		
 		public int x;
 		public int y;
 		public int cout;
 		public int distance;
 		public Noeud parent;
-
+		
 		
 		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
 			this.x = x;
@@ -303,15 +329,26 @@ public class Niveau {
 		public Noeud(int x, int y, Noeud parent) {
 			this(x, y, parent, false);
 		}
-
+		
 		public int f() {
 			return cout + distance;
 		}
 		
+		@Override
 		public String toString() {
 			return "Noeud(" + x + ", " + y + ")\n";
 		}
 		
+	}
+	
+	public class TNT {
+		public int x;
+		public int y;
+		
+		public TNT(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
 	}
 
 	public class InvalidValueException extends Exception {

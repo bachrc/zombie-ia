@@ -55,7 +55,7 @@ public class ZombiesIA {
 		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
 		
-		GroupeMessages.Intro.message();
+/*		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
@@ -65,5 +65,13 @@ public class ZombiesIA {
 		GroupeMessages.ApresNiveau1.message();
 		jeu = new ZombiesIA(2);
 		Messages.reponse(Messages.TypeReponse.Niveau2, Boolean.toString(jeu.play()));
+		jeu = new ZombiesIA(3);
+		Messages.reponse(Messages.TypeReponse.Niveau3, Boolean.toString(jeu.play()));
+		GroupeMessages.ApresNiveau3.message();
+		jeu = new ZombiesIA(4);
+		Messages.reponse(Messages.TypeReponse.Niveau4, Boolean.toString(jeu.play()));
+		GroupeMessages.ApresNiveau4.message();
+*/		jeu = new ZombiesIA(5);
+		Messages.reponse(Messages.TypeReponse.Niveau5, Boolean.toString(jeu.play()));
 	}
 }
