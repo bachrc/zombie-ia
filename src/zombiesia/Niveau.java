@@ -232,6 +232,11 @@ public class Niveau {
 								ferme.remove(actuel);
 								ouvert.add(v);
 							}
+						} else if((actuel = getNoeudAt(ouvert, v.x, v.y)) != null) {
+							if (actuel.f() > v.f()) {
+								ouvert.remove(actuel);
+								ouvert.add(v);
+							}
 						}
 					}
 				}
@@ -288,18 +293,19 @@ public class Niveau {
 	// ---
 	public class Zombie {
 
-		public int x, y, tour;
+		public int x, y, tour, champVision;
 
 		public Zombie(int x, int y) {
 			this.x = x;
 			this.y = y;
 			this.tour = 0;
+			this.champVision = 15;
 		}
 		
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
-			if(tour == 0) {
+			if(tour == 0 && ((Math.abs(xJoueur - this.x) + Math.abs(yJoueur - this.y)) < this.champVision)) {
 				this.x = x;
 				this.y = y;
 			}
@@ -319,7 +325,7 @@ public class Niveau {
 			this.x = x;
 			this.y = y;
 			this.distance = Math.abs(x - xJoueur) + Math.abs(y - yJoueur);
-			this.cout = (diagonale ? 14 : 10);
+			this.cout = (isExplosiveHere(x, y) ? 14 : (diagonale ? 12 : 10));
 			this.parent = parent;
 		}
 		

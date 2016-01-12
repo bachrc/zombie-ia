@@ -87,7 +87,7 @@ public class Messages {
 				break;
 			case Niveau7 :
 				if(reponse.equalsIgnoreCase("true")) intro("Et c'est LA VICTOIIIIIRE !", "Plus d'apocalypse zombie dans votre console, vous avez sauvé votre disque dur de la défragmentation. Vous êtes un héros.", "Tagada tsoin-tsoin.");
-				else intro("Vous êtes arrivé si loin, je vous DEFENDS D'ABANDONNER.", "C'est le bien de ma NOTE qui est en jeu. DEFENDEZ-VOUS !");
+				else { intro("Vous êtes arrivé si loin, je vous DEFENDS D'ABANDONNER.", "C'est le bien de ma NOTE qui est en jeu. DEFENDEZ-VOUS !"); return false; }
 				break;
 			case NoteFin :
 				if(reponse.equalsIgnoreCase("oui")) { intro("Ah ! C'est classieux ! Désolé d'avoir été si dur avec vous au départ.", "On prend vite la grosse tête quand on est le maître du jeu, n'est-ce pas ? Haha."); return true; }

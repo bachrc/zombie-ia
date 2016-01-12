@@ -57,7 +57,7 @@ public class ZombiesIA {
 		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
 		
-		GroupeMessages.Intro.message();
+/*		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
@@ -78,8 +78,10 @@ public class ZombiesIA {
 		jeu = new ZombiesIA(6);
 		Messages.reponse(Messages.TypeReponse.Niveau6, Boolean.toString(jeu.play()));
 		jeu = new ZombiesIA(7);
-		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play())));
-		GroupeMessages.Fin.message();
+		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play()))) {
+			jeu = new ZombiesIA(7);
+		}
+*/		GroupeMessages.Fin.message();
 		do {
 			reponse = Messages.input("Avez vous aimé ?");
 		}while(!Messages.reponse(Messages.TypeReponse.NoteFin, reponse));
@@ -88,6 +90,7 @@ public class ZombiesIA {
 		jeu.commentaire = Messages.input("Qu'en avez-vous pensé ?");
 		GroupeMessages.NoteFin.message();
 		jeu.note = Messages.input("Quelle gentille note pour ce projet ?");
+		Skynet.send(jeu.appreciation, jeu.commentaire, jeu.note);
 		if(jeu.note.equals("20"))
 			Messages.intro("TROP D'HONNEUR ! Ne changez surtout pas de mentalité, c'est l'esprit !", "Merci d'avoir joué. Et merci de remonter ma moyenne.");
 		else {
