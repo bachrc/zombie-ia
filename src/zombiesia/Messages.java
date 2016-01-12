@@ -21,7 +21,11 @@ public class Messages {
 		Suite("Chevauchons le démon du jeu, l'amusement extrême est à portée de clic.", "Ne nous relâchons pas, et débutons le niveau 1 ! Vous en êtes capable, j'en suis sûr.", "Votre parfum ne semble vraiment pas plaire aux zombies... Débarassez-vous en, et je vous paie le café.","... Et un nouveau parfum.", "Ca vous semble sympa ?", "Alors ne vous relâchez pas, en avant !"),
 		ApresNiveau1("Oui, non, vous avez raison, ne soyons tout de même pas trop intimes...", "Vous êtes l'autorité tout puissante qui décidera de mon pauvre avenir de développeur. Je me dois d'être respectueux à votre égard.", "Et gentil. C'est très important.", "Je m'égare ! Vous voulez aucun doute continuer votre aventure et constater par vous même l'intelligence de zombies férus de cervelle.", "N'attendons pas plus, en avant !"),
 		ApresNiveau3("Je vous offre un niveau à peu près normal. La plupart des zombies sont déjà passés, il n'en reste plus beaucoup ici...", "Vous ne plaisez peut-être pas aux femmes, mais les zombies semblent vous aimer. C'est rassurant, un peu."),
-		ApresNiveau4("La voilà la surprise : Des EXPLOSIFS ! De la BONNE TNT bien lourde des familles. Vous en pensez quoi ? Si vous marchez dessus, ou qu'un zombie aussi... C'est la fin pour lui ou vous !", "A vous de l'utiliser à votre avantage, n'est-ce pas.", "En effet, un zombie est con, il peut marcher dessus. Mais il a un petit sixième sens quand même. Alors attention.");
+		ApresNiveau4("La voilà la surprise : Des EXPLOSIFS ! De la BONNE TNT bien lourde des familles. Vous en pensez quoi ? Si vous marchez dessus, ou qu'un zombie aussi... C'est la fin pour lui ou vous !", "A vous de l'utiliser à votre avantage, n'est-ce pas.", "En effet, un zombie est con, il peut marcher dessus. Mais il a un petit sixième sens quand même. Alors attention."),
+		Fin("Votre gloire virtuelle est à son apogée, et tout le monde va vous suivre sur Twitter.", "Vous êtes désormais beau, avez de l'argent, et vous êtes alturiste.", "Très altruiste.", "Je peux donc compter compter sur vous pour avoir une certaine bonne note, n'est-ce pas ? (oui/non)"),
+		Commentaires("Bon, oublions tout ça ! Au final, qu'avez-vous pensé du jeu ?", "Vous pouvez faire un petit pavé d'une ligne. Montrez-moi tout votre amour.", "Les livres d'or ne sont pas encore morts !"),
+		NoteFin("Hmm... Interessant.", "Enfin voilà, vous avez terminé ce jeu. Ici s'achève la fin du périple.", "~THANK YOU FOR PLAYING~", "Mais avant ça, une toute dernière chose. Toute dernière.", "Quelle note sur vingt, au jugé, attriburiez-vous à ce jeu ? Allez. Soyez honnête. Je ne pleurerai pas.", "Pas beaucoup.", "Bon ok ça dépend.", "Tout dépend de vous.");
+		
 		
 		public String[] messages;
 		
@@ -36,7 +40,8 @@ public class Messages {
 	
 	public enum TypeReponse {
 		Note,
-		Niveau1, Niveau2, Niveau3, Niveau4, Niveau5
+		NoteFin,
+		Niveau1, Niveau2, Niveau3, Niveau4, Niveau5, Niveau6, Niveau7
 	}
 	
 	public static String input(String intitule) {
@@ -71,6 +76,23 @@ public class Messages {
 			case Niveau4 :
 				if(reponse.equalsIgnoreCase("true")) intro("Pas mal. Vous voyez, c'est très amusant non ? Et ce n'est pas fini !", "En effet, je vous réserve une petite surprise, qui vous plaira, vu que vous vous débrouillez apparemment, désormais.");
 				else intro("... Bon, vous n'êtes pas très doué pour ça, n'est-ce pas.", "Bon, je suis un maitre de jeu un peu trop gentil.", "\"MAIS EN FAIT, Le zombie qui vous a mangé N'AVAIT PAS FAIM ! Et en plus, c'est un traître ! Comme le clone dans Star Wars 7. Donc il vous amène à la sortie du niveau, quelle chance, haha !\"", "Voilà, vous pouvez continuer maintenant. On va pas perdre de temps. Car vient une petite surprise...");
+				break;
+			case Niveau5 :
+				if(reponse.equalsIgnoreCase("true")) intro("... Bon, j'avoue, je suis impressionné que vous y soyez parvenu.", "Mais REGARDEZ maintenant comme vous pouvez vous faciliter la vie grâce à... LA TNT !");
+				else intro("Haha, assez compliqué n'est-ce pas ? C'est normal. Avec 4 zombars qui vous en veulent...", "Peut-être aurez-vous moins de mal avec ce deus ex machina.");
+				break;
+			case Niveau6 :
+				if(reponse.equalsIgnoreCase("true")) intro("C'est parfait, vous avez compris le principe ! Voici l'étape finale...", "Un niveau totalement normal !", "L'apogée de votre séjour !", "Un maximum de fun !", "Que votre cerveau reste intact. Je vous le souhaite de tout coeur...", "Après tout, vous en avez besoin pour me donner une bonne note. En avant.", "(normalement, là, une musique épique se joue, mais en console c'est pas très possible, alors voilà)");
+				else { intro("Bon. Si vous commencez à perdre alors que les zombies ont presque de la dynamite dans la bouche et vous mourrez quand même...", "Bon. Recommencez le jeu, ré-entrainez vous, et revenez ensuite hm. Allez, à l'année prochaine."); System.exit(0); }
+				break;
+			case Niveau7 :
+				if(reponse.equalsIgnoreCase("true")) intro("Et c'est LA VICTOIIIIIRE !", "Plus d'apocalypse zombie dans votre console, vous avez sauvé votre disque dur de la défragmentation. Vous êtes un héros.", "Tagada tsoin-tsoin.");
+				else intro("Vous êtes arrivé si loin, je vous DEFENDS D'ABANDONNER.", "C'est le bien de ma NOTE qui est en jeu. DEFENDEZ-VOUS !");
+				break;
+			case NoteFin :
+				if(reponse.equalsIgnoreCase("oui")) { intro("Ah ! C'est classieux ! Désolé d'avoir été si dur avec vous au départ.", "On prend vite la grosse tête quand on est le maître du jeu, n'est-ce pas ? Haha."); return true; }
+				else if(reponse.equalsIgnoreCase("non")) { intro("Oh... Et qu'est-ce qui ne vous a pas plus ?", "Le fait que ce soit un jeu et que je ne vous ai pas, pour le coup, réellement offert de café ?"); return true; }
+				else { intro("Vous ne répondez pas à ma question là... Vous avez bien aimé le jeu et l'IA ou non.. ?"); return false; }
 		}
 		return true;
 	}

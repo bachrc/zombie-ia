@@ -16,6 +16,7 @@ import zombiesia.Niveau.InvalidValueException;
 public class ZombiesIA {
 	
 	private Niveau niveau;
+	public String appreciation = "Nope", commentaire = "Nope", note = "Nopenopenope";
 
 	public ZombiesIA(int niveau) {
 		try {
@@ -51,11 +52,12 @@ public class ZombiesIA {
 		return niveau.toString();
 	}
 	
+	@SuppressWarnings("empty-statement")
 	public static void main(String[] args) {
 		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
 		
-/*		GroupeMessages.Intro.message();
+		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
@@ -71,7 +73,51 @@ public class ZombiesIA {
 		jeu = new ZombiesIA(4);
 		Messages.reponse(Messages.TypeReponse.Niveau4, Boolean.toString(jeu.play()));
 		GroupeMessages.ApresNiveau4.message();
-*/		jeu = new ZombiesIA(5);
+		jeu = new ZombiesIA(5);
 		Messages.reponse(Messages.TypeReponse.Niveau5, Boolean.toString(jeu.play()));
+		jeu = new ZombiesIA(6);
+		Messages.reponse(Messages.TypeReponse.Niveau6, Boolean.toString(jeu.play()));
+		jeu = new ZombiesIA(7);
+		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play())));
+		GroupeMessages.Fin.message();
+		do {
+			reponse = Messages.input("Avez vous aimé ?");
+		}while(!Messages.reponse(Messages.TypeReponse.NoteFin, reponse));
+		jeu.appreciation = reponse;
+		GroupeMessages.Commentaires.message();
+		jeu.commentaire = Messages.input("Qu'en avez-vous pensé ?");
+		GroupeMessages.NoteFin.message();
+		jeu.note = Messages.input("Quelle gentille note pour ce projet ?");
+		if(jeu.note.equals("20"))
+			Messages.intro("TROP D'HONNEUR ! Ne changez surtout pas de mentalité, c'est l'esprit !", "Merci d'avoir joué. Et merci de remonter ma moyenne.");
+		else {
+			Messages.intro("Interessant. Merci pour votre note ! Mais si jamais ça peut influer votre jugement...", "Je vous donne ce fromage !");
+			System.out.println("         _--\"-.\n" +
+"      .-\"      \"-.\n" +
+"     |\"\"--..      '-.\n" +
+"     |      \"\"--..   '-.\n" +
+"     |.-. .-\".    \"\"--..\".\n" +
+"     |'./  -_'  .-.      |\n" +
+"     |      .-. '.-'   .-'\n" +
+"     '--..  '.'    .-  -.\n" +
+"          \"\"--..   '_'   :\n" +
+"                \"\"--..   |\n" +
+"                      \"\"-'");
+			Messages.intro("Pourquoi un fromage me demanderez-vous... ?", "Parce qu'un fromage est toujours accompagné...", "D'un BON VINGT !");
+			System.out.println("        _\n" +
+"       |-|\n" +
+"       |~|\n" +
+"       |:|\n" +
+"      .'.'.\n" +
+"     /   ::\\\n" +
+"     |_____|     __          _\n" +
+"     |:.:;.|   <:__:>     .-'o\\\n" +
+"     |_____|   \\  ::/  .o' O. o\\\n" +
+"     |   ::|    '..'  |--o.--o--|\n" +
+"     |   ;:|     ||   |._._o_._.|\n" +
+"     \\_____/    .''.\n" +
+"               '----'     ");
+			Messages.intro("UN BON VIN ! AVEC LE FROMAGE ! LE VINGT, LA NOTE !", "...", "Excusez-moi. Me mettez pas de malus. S'il vous plaît.", "En espérant que vous vous êtes amusé. Merci d'avoir joué, et à bientôt !");
+		}
 	}
 }

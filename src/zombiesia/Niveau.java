@@ -8,7 +8,6 @@ package zombiesia;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import jlibs.core.lang.Ansi;
 
 /**
  *
@@ -173,11 +172,10 @@ public class Niveau {
 	@Override
 	public String toString() {
 		String retour = "";
-		Ansi joueur, zombie, arrivee, normal;
-		joueur = new Ansi(Ansi.Attribute.NORMAL, Ansi.Color.BLACK, Ansi.Color.WHITE);
-		zombie = new Ansi(Ansi.Attribute.BRIGHT, Ansi.Color.GREEN, Ansi.Color.WHITE);
-		arrivee = new Ansi(Ansi.Attribute.BRIGHT, Ansi.Color.WHITE, Ansi.Color.RED);
-		normal = new Ansi(Ansi.Attribute.BRIGHT, Ansi.Color.BLACK, Ansi.Color.CYAN);
+		String ANSI_RESET = "\u001B[0m";
+		String ANSI_RED = "\u001B[31m";
+		String ANSI_GREEN = "\u001B[32m";
+		String ANSI_PURPLE = "\u001B[35m";
 
 		for (int y = 0; y < hauteur; y++) {
 			for (int x = 0; x < largeur; x++) {
@@ -186,17 +184,16 @@ public class Niveau {
 			retour += "+\n";
 			for (int x = 0; x < largeur; x++) {
 				retour += "|";
-				if (this.xJoueur == x && this.yJoueur == y) {
-					retour += joueur.colorize(" J ");
-				} else if (this.xArrivee == x && this.yArrivee == y) {
-					retour += arrivee.colorize(" A ");
-				} else if (isZombieHere(x, y)) {
-					retour += zombie.colorize(" Z ");
-				} else if (isExplosiveHere(x, y)) { 
-					retour += normal.colorize(" T ");
-				} else {
-					retour += normal.colorize(" " + plateau[y][x] + " ");
-				}
+				if (this.xJoueur == x && this.yJoueur == y) 
+					retour += " J ";
+				else if (this.xArrivee == x && this.yArrivee == y) 
+					retour += ANSI_PURPLE + " A " + ANSI_RESET;
+				else if (isZombieHere(x, y)) 
+					retour += ANSI_GREEN + " Z " + ANSI_RESET;
+				else if (isExplosiveHere(x, y))  
+					retour += ANSI_RED + " T " + ANSI_RESET;
+				else 
+					retour += " " + plateau[y][x] + " ";
 			}
 			retour += "|\n";
 		}
