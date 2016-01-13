@@ -95,50 +95,61 @@ public class Niveau {
 	public void movePlayer(char dir) {
 		switch (dir) {
 			case 'z':
-				if (isCaseFree(xJoueur, yJoueur - 1)) 
+				if (isCaseFree(xJoueur, yJoueur - 1)) {
 					yJoueur--;
+				}
 				break;
 			case 's':
-				if (isCaseFree(xJoueur, yJoueur + 1)) 
+				if (isCaseFree(xJoueur, yJoueur + 1)) {
 					yJoueur++;
+				}
 				break;
 			case 'q':
-				if (isCaseFree(xJoueur - 1, yJoueur)) 
+				if (isCaseFree(xJoueur - 1, yJoueur)) {
 					xJoueur--;
+				}
 				break;
 			case 'd':
-				if (isCaseFree(xJoueur + 1, yJoueur)) 
+				if (isCaseFree(xJoueur + 1, yJoueur)) {
 					xJoueur++;
+				}
 				break;
 		}
 	}
 
 	public void moveZombies() {
-		for(Zombie z:this.zombies) {
+		for (Zombie z : this.zombies) {
 			Noeud next = this.nextMove(z.x, z.y, xJoueur, yJoueur);
-			if(next != null)
+			if (next != null) {
 				z.move(next.x, next.y);
+			}
 		}
 	}
-	
+
 	public void removeExplosive(int x, int y) {
-		for(int i = 0; i < this.explosifs.size(); i++)
-			if(explosifs.get(i).x == x && explosifs.get(i).y == y)
+		for (int i = 0; i < this.explosifs.size(); i++) {
+			if (explosifs.get(i).x == x && explosifs.get(i).y == y) {
 				this.explosifs.remove(i);
+			}
+		}
 	}
 
 	public boolean isZombieHere(int x, int y) {
-		for (Zombie z : this.zombies) 
-			if (z.x == x && z.y == y) 
+		for (Zombie z : this.zombies) {
+			if (z.x == x && z.y == y) {
 				return true;
+			}
+		}
 
 		return false;
 	}
-	
+
 	public boolean isExplosiveHere(int x, int y) {
-		for (TNT t : this.explosifs) 
-			if (t.x == x && t.y == y) 
+		for (TNT t : this.explosifs) {
+			if (t.x == x && t.y == y) {
 				return true;
+			}
+		}
 
 		return false;
 	}
@@ -157,16 +168,18 @@ public class Niveau {
 	public boolean isDead() {
 		return !alive;
 	}
-	
+
 	public void levelActions() {
-		if(isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur))
+		if (isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur)) {
 			alive = false;
-		
-		for(int i = 0; i < this.zombies.size(); i++)
-			if(isExplosiveHere(zombies.get(i).x,zombies.get(i).y)) {
-				removeExplosive(zombies.get(i).x,zombies.get(i).y);
+		}
+
+		for (int i = 0; i < this.zombies.size(); i++) {
+			if (isExplosiveHere(zombies.get(i).x, zombies.get(i).y)) {
+				removeExplosive(zombies.get(i).x, zombies.get(i).y);
 				this.zombies.remove(i--);
 			}
+		}
 	}
 
 	@Override
@@ -177,62 +190,68 @@ public class Niveau {
 		String ANSI_GREEN = "\u001B[32m";
 		String ANSI_PURPLE = "\u001B[35m";
 
+		for (int x = 0; x < largeur; x++) {
+			retour += "+---";
+		}
+		retour += "+\n";
+
 		for (int y = 0; y < hauteur; y++) {
+			retour += "|";
 			for (int x = 0; x < largeur; x++) {
-				retour += "+---";
-			}
-			retour += "+\n";
-			for (int x = 0; x < largeur; x++) {
-				retour += "|";
-				if (this.xJoueur == x && this.yJoueur == y) 
-					retour += " J ";
-				else if (this.xArrivee == x && this.yArrivee == y) 
-					retour += ANSI_PURPLE + " A " + ANSI_RESET;
-				else if (isZombieHere(x, y)) 
-					retour += ANSI_GREEN + " Z " + ANSI_RESET;
-				else if (isExplosiveHere(x, y))  
-					retour += ANSI_RED + " T " + ANSI_RESET;
-				else 
-					retour += " " + plateau[y][x] + " ";
+				if (this.xJoueur == x && this.yJoueur == y) {
+					retour += " J1 ";
+				} else if (this.xArrivee == x && this.yArrivee == y) {
+					retour += ANSI_PURPLE + " AR " + ANSI_RESET;
+				} else if (isZombieHere(x, y)) {
+					retour += ANSI_GREEN + " ZO " + ANSI_RESET;
+				} else if (isExplosiveHere(x, y)) {
+					retour += ANSI_RED + " TN " + ANSI_RESET;
+				} else {
+					retour += " " + plateau[y][x] + plateau[y][x] + " ";
+				}
 			}
 			retour += "|\n";
 		}
 
+		for (int x = 0; x < largeur; x++) {
+			retour += "+---";
+		}
+		retour += "+\n";
+		
 		return retour;
 	}
-	
+
 	// ------------------------
 	// Partie réservée au calcul du chemin
 	// ------------------------
-
 	public Noeud chemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		ArrayList<Noeud> ferme = new ArrayList<>();
 		ArrayList<Noeud> ouvert = new ArrayList<>();
 		ArrayList<Noeud> voisins;
-		
+
 		ouvert.add(new Noeud(xOrigine, yOrigine, null));
 
 		while (!ouvert.isEmpty()) {
 			Noeud n = plusPetitNoeud(ouvert);
 			ouvert.remove(n);
 			ferme.add(n);
-			
+
 			voisins = getVoisins(n, (this.difficulte % 2 == 1));
-			
-			for(Noeud v:voisins) {
-				if(v.x == xGoal && v.y == yGoal)
+
+			for (Noeud v : voisins) {
+				if (v.x == xGoal && v.y == yGoal) {
 					return v;
-				else {
-					if(getNoeudAt(ouvert, v.x, v.y) == null && getNoeudAt(ferme, v.x, v.y) == null)
+				} else {
+					if (getNoeudAt(ouvert, v.x, v.y) == null && getNoeudAt(ferme, v.x, v.y) == null) {
 						ouvert.add(v);
-					else {
+					} else {
 						Noeud actuel;
-						if((actuel = getNoeudAt(ferme, v.x, v.y)) != null) {
+						if ((actuel = getNoeudAt(ferme, v.x, v.y)) != null) {
 							if (actuel.f() > v.f()) {
 								ferme.remove(actuel);
 								ouvert.add(v);
 							}
-						} else if((actuel = getNoeudAt(ouvert, v.x, v.y)) != null) {
+						} else if ((actuel = getNoeudAt(ouvert, v.x, v.y)) != null) {
 							if (actuel.f() > v.f()) {
 								ouvert.remove(actuel);
 								ouvert.add(v);
@@ -242,48 +261,60 @@ public class Niveau {
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public Noeud nextMove(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal);
-		
-		if(n == null) return null;
-		
-		while(n.parent != null) {
-			if(n.parent.parent == null)
+
+		if (n == null) {
+			return null;
+		}
+
+		while (n.parent != null) {
+			if (n.parent.parent == null) {
 				return n;
-			
+			}
+
 			n = n.parent;
 		}
-		
+
 		return null;
 	}
-	
+
 	public Noeud getNoeudAt(ArrayList<Noeud> al, int x, int y) {
-		for(Noeud n : al) if(n.x == x && n.y == y) return n;
-		
+		for (Noeud n : al) {
+			if (n.x == x && n.y == y) {
+				return n;
+			}
+		}
+
 		return null;
 	}
 
 	public Noeud plusPetitNoeud(ArrayList<Noeud> ouverts) {
 		Noeud noeudMin = new Noeud(10000, 10000, null);
 
-		for (Noeud n : ouverts) 
-			if (n.f() < noeudMin.f()) 
+		for (Noeud n : ouverts) {
+			if (n.f() < noeudMin.f()) {
 				noeudMin = n;
-			
+			}
+		}
+
 		return noeudMin;
 	}
-	
+
 	public ArrayList<Noeud> getVoisins(Noeud n, boolean diagonales) {
 		ArrayList<Noeud> retour = new ArrayList<>();
-		int[] xs = {n.x-1, n.x, n.x, n.x+1, n.x-1, n.x+1, n.x-1, n.x+1};
-		int[] ys = {n.y, n.y-1, n.y+1, n.y, n.y-1, n.y-1, n.y+1, n.y+1};
-		
-		for(int i = 0; i < (diagonales ? 8 : 4); i++)
-			if(isCaseFree(xs[i], ys[i])) retour.add(new Noeud(xs[i], ys[i], n, i > 4));
+		int[] xs = {n.x - 1, n.x, n.x, n.x + 1, n.x - 1, n.x + 1, n.x - 1, n.x + 1};
+		int[] ys = {n.y, n.y - 1, n.y + 1, n.y, n.y - 1, n.y - 1, n.y + 1, n.y + 1};
+
+		for (int i = 0; i < (diagonales ? 8 : 4); i++) {
+			if (isCaseFree(xs[i], ys[i])) {
+				retour.add(new Noeud(xs[i], ys[i], n, i > 4));
+			}
+		}
 
 		return retour;
 	}
@@ -301,11 +332,11 @@ public class Niveau {
 			this.tour = 0;
 			this.champVision = 15;
 		}
-		
+
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
-			if(tour == 0 && ((Math.abs(xJoueur - this.x) + Math.abs(yJoueur - this.y)) < this.champVision)) {
+			if (tour == 0 && ((Math.abs(xJoueur - this.x) + Math.abs(yJoueur - this.y)) < this.champVision)) {
 				this.x = x;
 				this.y = y;
 			}
@@ -313,14 +344,13 @@ public class Niveau {
 	}
 
 	public class Noeud {
-		
+
 		public int x;
 		public int y;
 		public int cout;
 		public int distance;
 		public Noeud parent;
-		
-		
+
 		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
 			this.x = x;
 			this.y = y;
@@ -328,26 +358,27 @@ public class Niveau {
 			this.cout = (isExplosiveHere(x, y) ? 14 : (diagonale ? 12 : 10));
 			this.parent = parent;
 		}
-		
+
 		public Noeud(int x, int y, Noeud parent) {
 			this(x, y, parent, false);
 		}
-		
+
 		public int f() {
 			return cout + distance;
 		}
-		
+
 		@Override
 		public String toString() {
 			return "Noeud(" + x + ", " + y + ")\n";
 		}
-		
+
 	}
-	
+
 	public class TNT {
+
 		public int x;
 		public int y;
-		
+
 		public TNT(int x, int y) {
 			this.x = x;
 			this.y = y;
