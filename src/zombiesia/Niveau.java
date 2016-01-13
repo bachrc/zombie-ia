@@ -264,23 +264,30 @@ public class Niveau {
 
 		return null;
 	}
+	
+	public ArrayList<Noeud> alChemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
+		ArrayList<Noeud> chemin = new ArrayList<>();
+		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal);
+		
+		if(n != null) {
+			chemin.add(n);
+			while(n.parent != null) {
+				chemin.add(0, n.parent);
+				n = n.parent;
+			}
+		}
+		
+		return chemin;
+	}
 
 	public Noeud nextMove(int xOrigine, int yOrigine, int xGoal, int yGoal) {
-		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal);
+		ArrayList<Noeud> chemin = alChemin(xOrigine, yOrigine, xGoal, yGoal);
 
-		if (n == null) {
+		if (chemin.size() >= 2) {
+			return chemin.get(1);
+		} else {
 			return null;
 		}
-
-		while (n.parent != null) {
-			if (n.parent.parent == null) {
-				return n;
-			}
-
-			n = n.parent;
-		}
-
-		return null;
 	}
 
 	public Noeud getNoeudAt(ArrayList<Noeud> al, int x, int y) {
@@ -364,7 +371,7 @@ public class Niveau {
 		}
 
 		public int f() {
-			return cout + distance;
+			return cout + distance + (parent == null ? 0 : parent.f());
 		}
 
 		@Override
