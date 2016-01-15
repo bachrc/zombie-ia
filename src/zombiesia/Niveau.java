@@ -269,12 +269,9 @@ public class Niveau {
 		ArrayList<Noeud> chemin = new ArrayList<>();
 		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal);
 		
-		if(n != null) {
-			chemin.add(n);
-			while(n.parent != null) {
-				chemin.add(0, n.parent);
-				n = n.parent;
-			}
+		while(n != null) {
+			chemin.add(0, n);
+			n = n.parent;
 		}
 		
 		return chemin;
@@ -343,6 +340,8 @@ public class Niveau {
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
+			
+			// Si c'est le tour de jouer du zombie et qu'il n'est pas trop loin
 			if (tour == 0 && ((Math.abs(xJoueur - this.x) + Math.abs(yJoueur - this.y)) < this.champVision)) {
 				this.x = x;
 				this.y = y;
@@ -358,12 +357,16 @@ public class Niveau {
 		public int distance;
 		public Noeud parent;
 
-		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
+		public Noeud(int x, int y, Noeud parent, boolean diagonale, int xCible, int yCible) {
 			this.x = x;
 			this.y = y;
-			this.distance = Math.abs(x - xJoueur) + Math.abs(y - yJoueur);
-			this.cout = (isExplosiveHere(x, y) ? 14 : (diagonale ? 12 : 10));
+			this.distance = Math.abs(x - xCible) + Math.abs(y - yCible);
+			this.cout = (isExplosiveHere(x, y) ? 16 : (diagonale ? 14 : 10));
 			this.parent = parent;
+		}
+		
+		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
+			this(x, y, parent, diagonale, xJoueur, yJoueur);
 		}
 
 		public Noeud(int x, int y, Noeud parent) {
