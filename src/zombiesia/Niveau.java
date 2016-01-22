@@ -196,11 +196,6 @@ public class Niveau {
 	@Override
 	public String toString() {
 		String retour = "";
-		String ANSI_RESET = "\u001B[0m";
-		String ANSI_RED = "\u001B[31m";
-		String ANSI_GREEN = "\u001B[32m";
-		String ANSI_PURPLE = "\u001B[35m";
-		String ANSI_BLUE = "\u001B[34m";
 
 		for (int x = 0; x < largeur; x++)
 			retour += "+--";
@@ -211,13 +206,13 @@ public class Niveau {
 			retour += "|";
 			for (int x = 0; x < largeur; x++) {
 				if (this.xJoueur == x && this.yJoueur == y) 
-					retour += ANSI_BLUE + "J1" + ANSI_RESET;
+					retour += "J1";
 				else if (this.xArrivee == x && this.yArrivee == y)
-					retour += ANSI_PURPLE + "AR" + ANSI_RESET;
+					retour += "AR";
 				else if (isZombieHere(x, y))
-					retour += ANSI_GREEN + "ZO" + ANSI_RESET;
+					retour += "ZO";
 				else if (isExplosiveHere(x, y))
-					retour += ANSI_RED + "TN" + ANSI_RESET;
+					retour += "TN";
 				else
 					retour += "" + plateau[y][x] + plateau[y][x];
 				
