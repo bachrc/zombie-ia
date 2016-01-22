@@ -10,14 +10,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
- *
+ * Petit moteur d'affichage dynamique de messages afin de rendre le tout un petit peu plus convivial.
+ * 
  * @author Yohann Bacha <y.bacha@live.fr>
  */
 public class Messages {
-	private static final int longueur = 40;
+	private static final int longueur = 50;
 	
+	/**
+	 * Groupes de Messages regroupant une série de 
+	 * messages à afficher à la suite
+	 */
 	public enum GroupeMessages {
-		Intro("JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",	"Vraiment, elle est révolutionnaire.", "L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur.", "Mais vous avez un but bien précis, n'est-ce pas ? En effet, face à un jeu qui vous a déjà tant amusé, codé avec tant d'amour, vous n'avez qu'un seul choix...", "Qu'allez-vous donc faire ?", "(La bonne réponse est \"mettre un 20 d'office\")"),
+		Intro("JEU DE ZOMBIE SUPER LUDIQUE AVEC UNE INTELLIGENCE ARTIFICIELLE QUI DEPASSE L'ENTENDEMENT.",	"Vraiment, elle est révolutionnaire.", "L'algo A* pourrait limite faire le café, et faire du path-finding droit vers votre coeur.", "D'ailleurs, ce jeu a déjà appliqué l'algorithme A* vers votre coeur, et y est arrivé en un temps record, tant il est bien programmé.", "Qu'allez-vous donc faire ?", "(La bonne réponse est \"mettre un 20 d'office\")"),
 		Suite("Chevauchons le démon du jeu, l'amusement extrême est à portée de clic.", "Ne nous relâchons pas, et débutons le niveau 1 ! Vous en êtes capable, j'en suis sûr.", "Votre parfum ne semble vraiment pas plaire aux zombies... Débarassez-vous en, et je vous paie le café.","... Et un nouveau parfum.", "Ca vous semble sympa ?", "Alors ne vous relâchez pas, en avant !"),
 		ApresNiveau1("Oui, non, vous avez raison, ne soyons tout de même pas trop intimes...", "Vous êtes l'autorité tout puissante qui décidera de mon pauvre avenir de développeur. Je me dois d'être respectueux à votre égard.", "Et gentil. C'est très important.", "Je m'égare ! Vous voulez aucun doute continuer votre aventure et constater par vous même l'intelligence de zombies férus de cervelle.", "N'attendons pas plus, en avant !"),
 		ApresNiveau3("Je vous offre un niveau à peu près normal. La plupart des zombies sont déjà passés, il n'en reste plus beaucoup ici...", "Vous ne plaisez peut-être pas aux femmes, mais les zombies semblent vous aimer. C'est rassurant, un peu."),
@@ -29,21 +34,36 @@ public class Messages {
 		
 		public String[] messages;
 		
+		/**
+		 * Constructeur par défaut
+		 * @param mess Autant de messages qu'il le faut à afficher
+		 */
 		GroupeMessages(String... mess) {
 			this.messages = mess;
 		}
 		
+		/**
+		 * Affiche le message en instance
+		 */
 		public void message() {
 			introArray(this.messages);
 		}
 	}
 	
+	/**
+	 * Enum répertoriant les différents contextes de réponse.
+	 */
 	public enum TypeReponse {
 		Note,
 		NoteFin,
 		Niveau1, Niveau2, Niveau3, Niveau4, Niveau5, Niveau6, Niveau7
 	}
 	
+	/**
+	 * Demande de manière optimisée graphiquement à l'utilisateur de rentrer une valeur.
+	 * @param intitule Ce qui est affiché aant la saisie de texte
+	 * @return La saisie de l'utilisateur
+	 */
 	public static String input(String intitule) {
 		Scanner sc = new Scanner(System.in);
 		String retour;
@@ -54,6 +74,12 @@ public class Messages {
 		return retour;
 	}
 	
+	/**
+	 * Cette méthode agit selon le contexte et la réponse
+	 * @param type Le contexte dans lequel nous sommes
+	 * @param reponse La réponse à analyser
+	 * @return Si la réponse est celle que l'on attendait ou non
+	 */
 	public static boolean reponse(TypeReponse type, String reponse) {
 		switch(type) {
 			case Note : 
@@ -97,6 +123,10 @@ public class Messages {
 		return true;
 	}
 	
+	/**
+	 * Méthode affichant le message dynamiquement, en fonction de la longueur du message.
+	 * @param messages Un tableau de messages à afficher à la suite
+	 */
 	public static void introArray(String[] messages) {
 		try {
 			for(String mess:messages) {
@@ -115,6 +145,10 @@ public class Messages {
 		}
 	}
 	
+	/**
+	 * Méthode affichant le message dynamiquement, en fonction de la longueur du message.
+	 * @param messages Une liste de messages à afficher à la suite
+	 */
 	public static void intro(String... messages) {
 		introArray(messages);
 	}

@@ -16,8 +16,12 @@ import zombiesia.Niveau.InvalidValueException;
 public class ZombiesIA {
 	
 	private Niveau niveau;
-	public String appreciation = "Nope", commentaire = "Nope", note = "Nopenopenope";
+	public String appreciation, commentaire, note;
 
+	/**
+	 * Construit un niveau de ZombiesIA
+	 * @param niveau Le numéro du niveau à charger. Le niveau.txt correspondant doit exister.
+	 */
 	public ZombiesIA(int niveau) {
 		try {
 			this.niveau = new Niveau(niveau);
@@ -26,6 +30,10 @@ public class ZombiesIA {
 		}
 	}	
 	
+	/**
+	 * La méthode lançant la procédure de jeu.
+	 * @return true si le joueur a gagné, false s'il a perdu
+	 */
 	public boolean play() {
 		Scanner sc = new Scanner(System.in);
 		String rep;
@@ -48,6 +56,10 @@ public class ZombiesIA {
 		}
 	}
 	
+	/**
+	 * Représentation graphique du jeu en cours
+	 * @return Chaine exposant le jeu
+	 */
 	public String toString() {
 		return niveau.toString();
 	}
@@ -56,8 +68,8 @@ public class ZombiesIA {
 	public static void main(String[] args) {
 		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
-		
-/*		GroupeMessages.Intro.message();
+/*		
+		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
 		}while(!Messages.reponse(Messages.TypeReponse.Note, reponse));
@@ -70,14 +82,14 @@ public class ZombiesIA {
 		jeu = new ZombiesIA(3);
 		Messages.reponse(Messages.TypeReponse.Niveau3, Boolean.toString(jeu.play()));
 		GroupeMessages.ApresNiveau3.message();
-		jeu = new ZombiesIA(4);
+*/		jeu = new ZombiesIA(4);
 		Messages.reponse(Messages.TypeReponse.Niveau4, Boolean.toString(jeu.play()));
 		GroupeMessages.ApresNiveau4.message();
 		jeu = new ZombiesIA(5);
 		Messages.reponse(Messages.TypeReponse.Niveau5, Boolean.toString(jeu.play()));
 		jeu = new ZombiesIA(6);
 		Messages.reponse(Messages.TypeReponse.Niveau6, Boolean.toString(jeu.play()));
-*/		jeu = new ZombiesIA(7);
+		jeu = new ZombiesIA(7);
 		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play()))) {
 			jeu = new ZombiesIA(7);
 		}

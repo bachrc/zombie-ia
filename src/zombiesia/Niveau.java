@@ -22,6 +22,7 @@ public class Niveau {
 	private ArrayList<Zombie> zombies;
 	private ArrayList<TNT> explosifs;
 	private int difficulte;
+	private int odorat;
 	private boolean alive;
 
 	public Niveau(int numero) throws InvalidValueException {
@@ -31,6 +32,13 @@ public class Niveau {
 		this.alive = true;
 	}
 
+	/**
+	 * Methode qui instancie l'objet courant avec le niveau passé en paramètre.
+	 * Les fichiers texte servant de source pour la génération du niveau comportent toujours une ligne d'entête.
+	 * <Hauteur-niveau> <Largeur-niveau> <Difficulte> <Odorat-zombie>
+	 * @param numero Numéro du niveau à charger.
+	 * @throws zombiesia.Niveau.InvalidValueException Renvoyée si une valeur quelconque est invalide, ou si le niveau n'existe pas.
+	 */
 	private void loadLevel(int numero) throws InvalidValueException {
 		InputStream level = Niveau.class.getResourceAsStream("/niveaux/niveau" + numero + ".txt");
 		if (level == null) {
@@ -41,6 +49,7 @@ public class Niveau {
 		this.hauteur = sc.nextInt();
 		this.largeur = sc.nextInt();
 		this.difficulte = sc.nextInt();
+		this.odorat = sc.nextInt();
 
 		this.plateau = new char[hauteur][largeur];
 		sc.nextLine();
@@ -95,69 +104,60 @@ public class Niveau {
 	public void movePlayer(char dir) {
 		switch (dir) {
 			case 'z':
-				if (isCaseFree(xJoueur, yJoueur - 1)) {
+				if (isCaseFree(xJoueur, yJoueur - 1)) 
 					yJoueur--;
-				}
+
 				break;
 			case 's':
-				if (isCaseFree(xJoueur, yJoueur + 1)) {
+				if (isCaseFree(xJoueur, yJoueur + 1)) 
 					yJoueur++;
-				}
+
 				break;
 			case 'q':
-				if (isCaseFree(xJoueur - 1, yJoueur)) {
+				if (isCaseFree(xJoueur - 1, yJoueur)) 
 					xJoueur--;
-				}
+
 				break;
 			case 'd':
-				if (isCaseFree(xJoueur + 1, yJoueur)) {
+				if (isCaseFree(xJoueur + 1, yJoueur)) 
 					xJoueur++;
-				}
+				
 				break;
 		}
 	}
 
 	public void moveZombies() {
-		for (Zombie z : this.zombies) {
-			Noeud next = this.nextMove(z.x, z.y, xJoueur, yJoueur);
-			if (next != null) {
-				z.move(next.x, next.y);
-			}
-		}
+		for (Zombie z : this.zombies) 
+			z.move(xJoueur, yJoueur);
 	}
 
 	public void removeExplosive(int x, int y) {
-		for (int i = 0; i < this.explosifs.size(); i++) {
-			if (explosifs.get(i).x == x && explosifs.get(i).y == y) {
+		for (int i = 0; i < this.explosifs.size(); i++) 
+			if (explosifs.get(i).x == x && explosifs.get(i).y == y) 
 				this.explosifs.remove(i);
-			}
-		}
+
 	}
 
 	public boolean isZombieHere(int x, int y) {
-		for (Zombie z : this.zombies) {
-			if (z.x == x && z.y == y) {
+		for (Zombie z : this.zombies) 
+			if (z.x == x && z.y == y) 
 				return true;
-			}
-		}
 
 		return false;
 	}
 
 	public boolean isExplosiveHere(int x, int y) {
-		for (TNT t : this.explosifs) {
-			if (t.x == x && t.y == y) {
+		for (TNT t : this.explosifs) 
+			if (t.x == x && t.y == y) 
 				return true;
-			}
-		}
 
 		return false;
 	}
 
 	public boolean isCaseFree(int x, int y) {
-		if (x >= 0 && y >= 0 && x < largeur && y < hauteur) {
+		if (x >= 0 && y >= 0 && x < largeur && y < hauteur) 
 			return (!isZombieHere(x, y) && plateau[y][x] == ' ');
-		}
+		
 		return false;
 	}
 
@@ -170,9 +170,8 @@ public class Niveau {
 	}
 
 	public void levelActions() {
-		if (isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur)) {
+		if (isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur))
 			alive = false;
-		}
 
 		for (int i = 0; i < this.zombies.size(); i++) {
 			if (isExplosiveHere(zombies.get(i).x, zombies.get(i).y)) {
@@ -189,32 +188,34 @@ public class Niveau {
 		String ANSI_RED = "\u001B[31m";
 		String ANSI_GREEN = "\u001B[32m";
 		String ANSI_PURPLE = "\u001B[35m";
+		String ANSI_BLUE = "\u001B[34m";
 
-		for (int x = 0; x < largeur; x++) {
-			retour += "+---";
-		}
+		for (int x = 0; x < largeur; x++)
+			retour += "+--";
+		
 		retour += "+\n";
 
 		for (int y = 0; y < hauteur; y++) {
 			retour += "|";
 			for (int x = 0; x < largeur; x++) {
-				if (this.xJoueur == x && this.yJoueur == y) {
-					retour += " J1 ";
-				} else if (this.xArrivee == x && this.yArrivee == y) {
-					retour += ANSI_PURPLE + " AR " + ANSI_RESET;
-				} else if (isZombieHere(x, y)) {
-					retour += ANSI_GREEN + " ZO " + ANSI_RESET;
-				} else if (isExplosiveHere(x, y)) {
-					retour += ANSI_RED + " TN " + ANSI_RESET;
-				} else {
-					retour += " " + plateau[y][x] + plateau[y][x] + " ";
-				}
+				if (this.xJoueur == x && this.yJoueur == y) 
+					retour += ANSI_BLUE + "J1" + ANSI_RESET;
+				else if (this.xArrivee == x && this.yArrivee == y)
+					retour += ANSI_PURPLE + "AR" + ANSI_RESET;
+				else if (isZombieHere(x, y))
+					retour += ANSI_GREEN + "ZO" + ANSI_RESET;
+				else if (isExplosiveHere(x, y))
+					retour += ANSI_RED + "TN" + ANSI_RESET;
+				else
+					retour += "" + plateau[y][x] + plateau[y][x];
+				
+				retour += " ";
 			}
 			retour += "|\n";
 		}
 
 		for (int x = 0; x < largeur; x++) {
-			retour += "+---";
+			retour += "+--";
 		}
 		retour += "+\n";
 		
@@ -280,19 +281,16 @@ public class Niveau {
 	public Noeud nextMove(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		ArrayList<Noeud> chemin = alChemin(xOrigine, yOrigine, xGoal, yGoal);
 
-		if (chemin.size() >= 2) {
+		if (chemin.size() >= 2) 
 			return chemin.get(1);
-		} else {
+		else 
 			return null;
-		}
 	}
 
 	public Noeud getNoeudAt(ArrayList<Noeud> al, int x, int y) {
-		for (Noeud n : al) {
-			if (n.x == x && n.y == y) {
+		for (Noeud n : al) 
+			if (n.x == x && n.y == y) 
 				return n;
-			}
-		}
 
 		return null;
 	}
@@ -300,11 +298,9 @@ public class Niveau {
 	public Noeud plusPetitNoeud(ArrayList<Noeud> ouverts) {
 		Noeud noeudMin = new Noeud(10000, 10000, null);
 
-		for (Noeud n : ouverts) {
-			if (n.f() < noeudMin.f()) {
+		for (Noeud n : ouverts) 
+			if (n.f() < noeudMin.f()) 
 				noeudMin = n;
-			}
-		}
 
 		return noeudMin;
 	}
@@ -334,17 +330,19 @@ public class Niveau {
 			this.x = x;
 			this.y = y;
 			this.tour = 0;
-			this.champVision = 15;
+			this.champVision = odorat;
 		}
 
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
+			ArrayList<Noeud> chemin = alChemin(this.x, this.y, x, y);
 			
 			// Si c'est le tour de jouer du zombie et qu'il n'est pas trop loin
-			if (tour == 0 && ((Math.abs(xJoueur - this.x) + Math.abs(yJoueur - this.y)) < this.champVision)) {
-				this.x = x;
-				this.y = y;
+			if (tour == 0 && chemin.size() < this.champVision && chemin.size() >= 2) {
+				Noeud next = chemin.get(1);
+				this.x = next.x;
+				this.y = next.y;
 			}
 		}
 	}
@@ -361,7 +359,7 @@ public class Niveau {
 			this.x = x;
 			this.y = y;
 			this.distance = Math.abs(x - xCible) + Math.abs(y - yCible);
-			this.cout = (isExplosiveHere(x, y) ? 16 : (diagonale ? 14 : 10));
+			this.cout = (isExplosiveHere(x, y) ? 18 : (diagonale ? 14 : 10));
 			this.parent = parent;
 		}
 		

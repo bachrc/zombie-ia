@@ -5,7 +5,6 @@
  */
 package zombiesia;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -16,7 +15,16 @@ import java.net.URLEncoder;
  * @author Yohann Bacha <y.bacha@live.fr>
  */
 public class Skynet {
-
+	
+	/**
+	 * Bon, d'accord. Si vous êtes tombés la dessus, vous vous doutez déjà de ce que ça doit être.
+	 * Les appréciations que vous renseignez sont envoyées chez moi. Comme ça, je sais ce que vous
+	 * pensez du jeu, tout ça.
+	 * 
+	 * @param appreciation Si vous avez aimé le jeu ou non
+	 * @param commentaire Ce que vous avez pensé du jeu
+	 * @param note La note au jugé que vous me mettriez
+	 */
 	public static void send(String appreciation, String commentaire, String note) {
 		String url = "http://pachattiere.net/getTrucs.php";
 		String charset = "UTF-8";
@@ -35,7 +43,7 @@ public class Skynet {
 				output.write(query.getBytes(charset));
 			}
 
-			InputStream response = connection.getInputStream();
+			connection.getInputStream();
 		} catch (Exception e) {
 			// On reste cachés quand même
 		}
