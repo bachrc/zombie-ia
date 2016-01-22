@@ -89,7 +89,7 @@ public class ZombiesIA {
 		Messages.reponse(Messages.TypeReponse.Niveau5, Boolean.toString(jeu.play()));
 		jeu = new ZombiesIA(6);
 		Messages.reponse(Messages.TypeReponse.Niveau6, Boolean.toString(jeu.play()));
-*/		jeu = new ZombiesIA(7);
+		jeu = new ZombiesIA(7);
 		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play()))) {
 			jeu = new ZombiesIA(7);
 		}
