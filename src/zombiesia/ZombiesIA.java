@@ -68,7 +68,7 @@ public class ZombiesIA {
 	public static void main(String[] args) {
 		ZombiesIA jeu = new ZombiesIA(1);
 		String reponse;
-/*		
+		
 		GroupeMessages.Intro.message();
 		do {
 			reponse = Messages.input("Que faire ?");
@@ -82,7 +82,7 @@ public class ZombiesIA {
 		jeu = new ZombiesIA(3);
 		Messages.reponse(Messages.TypeReponse.Niveau3, Boolean.toString(jeu.play()));
 		GroupeMessages.ApresNiveau3.message();
-*/		jeu = new ZombiesIA(4);
+		jeu = new ZombiesIA(4);
 		Messages.reponse(Messages.TypeReponse.Niveau4, Boolean.toString(jeu.play()));
 		GroupeMessages.ApresNiveau4.message();
 		jeu = new ZombiesIA(5);
