@@ -75,6 +75,10 @@ public class Niveau {
 						this.zombies.add(new Zombie(i, lineCount));
 						this.plateau[lineCount][i] = ' ';
 						break;
+					case 'B':
+						this.zombies.add(new Zombie(i, lineCount, true));
+						this.plateau[lineCount][i] = ' ';
+						break;
 					case 'A':
 						this.xArrivee = i;
 						this.yArrivee = lineCount;
@@ -104,22 +108,22 @@ public class Niveau {
 	public void movePlayer(char dir) {
 		switch (dir) {
 			case 'z':
-				if (isCaseFree(xJoueur, yJoueur - 1)) 
+				if (isCaseFree(xJoueur, yJoueur - 1, false)) 
 					yJoueur--;
 
 				break;
 			case 's':
-				if (isCaseFree(xJoueur, yJoueur + 1)) 
+				if (isCaseFree(xJoueur, yJoueur + 1, false)) 
 					yJoueur++;
 
 				break;
 			case 'q':
-				if (isCaseFree(xJoueur - 1, yJoueur)) 
+				if (isCaseFree(xJoueur - 1, yJoueur, false)) 
 					xJoueur--;
 
 				break;
 			case 'd':
-				if (isCaseFree(xJoueur + 1, yJoueur)) 
+				if (isCaseFree(xJoueur + 1, yJoueur, false)) 
 					xJoueur++;
 				
 				break;
@@ -127,8 +131,12 @@ public class Niveau {
 	}
 
 	public void moveZombies() {
-		for (Zombie z : this.zombies) 
-			z.move(xJoueur, yJoueur);
+		for (Zombie z : this.zombies) {
+			if(z.estBloquant())
+				z.block(xJoueur, yJoueur, xArrivee, yArrivee);
+			else
+				z.move(xJoueur, yJoueur);
+		}
 	}
 
 	public void removeExplosive(int x, int y) {
@@ -155,8 +163,12 @@ public class Niveau {
 	}
 
 	public boolean isCaseFree(int x, int y) {
+		return isCaseFree(x, y, true);
+	}
+	
+	public boolean isCaseFree(int x, int y, boolean geneZombie) {
 		if (x >= 0 && y >= 0 && x < largeur && y < hauteur) 
-			return (!isZombieHere(x, y) && plateau[y][x] == ' ');
+			return ((geneZombie ? !isZombieHere(x, y) : true) && plateau[y][x] == ' ');
 		
 		return false;
 	}
@@ -225,7 +237,12 @@ public class Niveau {
 	// ------------------------
 	// Partie réservée au calcul du chemin
 	// ------------------------
+	
 	public Noeud chemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
+		return chemin(xOrigine, yOrigine, xGoal, yGoal, true);
+	}
+	
+	public Noeud chemin(int xOrigine, int yOrigine, int xGoal, int yGoal, boolean obstacles) {
 		ArrayList<Noeud> ferme = new ArrayList<>();
 		ArrayList<Noeud> ouvert = new ArrayList<>();
 		ArrayList<Noeud> voisins;
@@ -237,7 +254,7 @@ public class Niveau {
 			ouvert.remove(n);
 			ferme.add(n);
 
-			voisins = getVoisins(n, (this.difficulte % 2 == 1));
+			voisins = getVoisins(n, (this.difficulte % 2 == 1), obstacles);
 
 			for (Noeud v : voisins) {
 				if (v.x == xGoal && v.y == yGoal) {
@@ -267,8 +284,12 @@ public class Niveau {
 	}
 	
 	public ArrayList<Noeud> alChemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
+		return alChemin(xOrigine, yOrigine, xGoal, yGoal, true);
+	}
+	
+	public ArrayList<Noeud> alChemin(int xOrigine, int yOrigine, int xGoal, int yGoal, boolean obstacles) {
 		ArrayList<Noeud> chemin = new ArrayList<>();
-		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal);
+		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal, obstacles);
 		
 		while(n != null) {
 			chemin.add(0, n);
@@ -305,13 +326,13 @@ public class Niveau {
 		return noeudMin;
 	}
 
-	public ArrayList<Noeud> getVoisins(Noeud n, boolean diagonales) {
+	public ArrayList<Noeud> getVoisins(Noeud n, boolean diagonales, boolean obstacles) {
 		ArrayList<Noeud> retour = new ArrayList<>();
 		int[] xs = {n.x - 1, n.x, n.x, n.x + 1, n.x - 1, n.x + 1, n.x - 1, n.x + 1};
 		int[] ys = {n.y, n.y - 1, n.y + 1, n.y, n.y - 1, n.y - 1, n.y + 1, n.y + 1};
 
 		for (int i = 0; i < (diagonales ? 8 : 4); i++) {
-			if (isCaseFree(xs[i], ys[i])) {
+			if (isCaseFree(xs[i], ys[i], obstacles)) {
 				retour.add(new Noeud(xs[i], ys[i], n, i > 4));
 			}
 		}
@@ -325,25 +346,57 @@ public class Niveau {
 	public class Zombie {
 
 		public int x, y, tour, champVision;
+		public boolean blocage;
 
 		public Zombie(int x, int y) {
+			this(x, y, false);
+		}
+		
+		public Zombie(int x, int y, boolean blocking) {
 			this.x = x;
 			this.y = y;
 			this.tour = 0;
 			this.champVision = odorat;
+			this.blocage = blocking;
 		}
 
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
 			ArrayList<Noeud> chemin = alChemin(this.x, this.y, x, y);
-			
-			// Si c'est le tour de jouer du zombie et qu'il n'est pas trop loin
+
+				// Si c'est le tour de jouer du zombie et qu'il n'est pas trop loin
 			if (tour == 0 && chemin.size() < this.champVision && chemin.size() >= 2) {
 				Noeud next = chemin.get(1);
 				this.x = next.x;
 				this.y = next.y;
 			}
+		}
+		
+		public void block(int xJoueur, int yJoueur, int xArrivee, int yArrivee) {
+			this.tour++;
+			this.tour %= (difficulte <= 2 ? 1 : 2);
+			
+			if(estBloquant() && alChemin(this.x, this.y, xJoueur, yJoueur, false).size() <= this.champVision && this.tour == 0) { // Si le zombie est bien bloquant, que le joueur est à portée, et que c'est son tour
+				ArrayList<Noeud> cheminJoueur = alChemin(xJoueur, yJoueur, xArrivee, yArrivee, false);
+				if(cheminJoueur.size() > 0) {
+					Noeud cible;
+					if(cheminJoueur.size() <= 3)
+						cible = new Noeud(xJoueur, yJoueur, null);
+					else
+						cible = cheminJoueur.get(cheminJoueur.size()/2);
+					
+					Noeud next = nextMove(this.x, this.y, cible.x, cible.y);
+					if(next != null) {
+						this.x = next.x;
+						this.y = next.y;
+					}
+				}
+			}
+		}
+		
+		public boolean estBloquant() {
+			return this.blocage;
 		}
 	}
 

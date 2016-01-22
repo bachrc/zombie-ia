@@ -39,8 +39,8 @@ public class ZombiesIA {
 		String rep;
 		char dir;
 		while(true) {
-			if(niveau.isArrived()) return true;
-			else if(niveau.isDead()) return false;
+			if(niveau.isDead()) return false;
+			else if(niveau.isArrived()) return true;
 			else {
 				System.out.println(niveau);
 				do {
@@ -89,7 +89,7 @@ public class ZombiesIA {
 		Messages.reponse(Messages.TypeReponse.Niveau5, Boolean.toString(jeu.play()));
 		jeu = new ZombiesIA(6);
 		Messages.reponse(Messages.TypeReponse.Niveau6, Boolean.toString(jeu.play()));
-		jeu = new ZombiesIA(7);
+*/		jeu = new ZombiesIA(7);
 		while(!Messages.reponse(Messages.TypeReponse.Niveau7, Boolean.toString(jeu.play()))) {
 			jeu = new ZombiesIA(7);
 		}
