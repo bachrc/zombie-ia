@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package zombiesia;
 
 import java.io.InputStream;
@@ -10,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * Classe principale gérant les évènements dans un niveau.
  * @author Yohann Bacha <y.bacha@live.fr>
  */
 public class Niveau {
@@ -25,6 +21,11 @@ public class Niveau {
 	private int odorat;
 	private boolean alive;
 
+	/**
+	 * Constructeur instanciant l'objet du niveau en chargeant le niveau renseigné
+	 * @param numero Le numéro du niveau à charger dans le package niveaux
+	 * @throws zombiesia.Niveau.InvalidValueException Renvoyée si le niveau possède une valeur invalide quelque part.
+	 */
 	public Niveau(int numero) throws InvalidValueException {
 		this.zombies = new ArrayList<>();
 		this.explosifs = new ArrayList<>();
@@ -105,6 +106,10 @@ public class Niveau {
 		}
 	}
 
+	/**
+	 * Fait bouger le joueur dans la direction suggérée par le caractère en paramètre
+	 * @param dir La direction dans laquelle le joueur doit se déplacer.
+	 */
 	public void movePlayer(char dir) {
 		switch (dir) {
 			case 'z':
@@ -130,6 +135,11 @@ public class Niveau {
 		}
 	}
 
+	/**
+	 * Méthode faisant bouger les zombies.
+	 * Les zombies bloquants s'interposent entre le joueur et l'arrivée.
+	 * Les autres se dirigent directement entre le joueur 
+	 */
 	public void moveZombies() {
 		for (Zombie z : this.zombies) {
 			if(z.estBloquant())
@@ -139,6 +149,11 @@ public class Niveau {
 		}
 	}
 
+	/**
+	 * Supprime les explosifs aux coordonnées renseignées.
+	 * @param x L'abscisse de la coordonnée
+	 * @param y L'ordonnée de la coordonnée
+	 */
 	public void removeExplosive(int x, int y) {
 		for (int i = 0; i < this.explosifs.size(); i++) 
 			if (explosifs.get(i).x == x && explosifs.get(i).y == y) 
@@ -146,6 +161,12 @@ public class Niveau {
 
 	}
 
+	/**
+	 * Renseigne si un zombie se trouve aux coordonnées renseignées.
+	 * @param x L'abscisse des coordonnées
+	 * @param y L'ordonnée des coordonnées
+	 * @return Si un zombie se trouve ici ou non
+	 */
 	public boolean isZombieHere(int x, int y) {
 		for (Zombie z : this.zombies) 
 			if (z.x == x && z.y == y) 
@@ -154,6 +175,12 @@ public class Niveau {
 		return false;
 	}
 
+	/**
+	 * Renseigne si un explosif se trouve aux coordonnées renseignées.
+	 * @param x L'abscisse des coordonnées
+	 * @param y L'ordonnée des coordonnées
+	 * @return Si un explosif se trouve ici ou non
+	 */
 	public boolean isExplosiveHere(int x, int y) {
 		for (TNT t : this.explosifs) 
 			if (t.x == x && t.y == y) 
@@ -162,10 +189,23 @@ public class Niveau {
 		return false;
 	}
 
+	/**
+	 * Renseigne si une case est libre de déplacement, en considérant que les murs et zombies sont un obstacle
+	 * @param x L'abscisse de la case
+	 * @param y L'ordonnée de la case
+	 * @return Si la case est libre ou non
+	 */
 	public boolean isCaseFree(int x, int y) {
 		return isCaseFree(x, y, true);
 	}
 	
+	/**
+	 * Renseigne si une case est libre de déplacement, en considérant que les murs sont des obstacles.
+	 * @param x L'abcisse de la case
+	 * @param y L'ordonnée de la case
+	 * @param geneZombie Booléen pour savoir si l'on considère le zombie comme un obstacle ou non
+	 * @return Si la case est libre ou non
+	 */
 	public boolean isCaseFree(int x, int y, boolean geneZombie) {
 		if (x >= 0 && y >= 0 && x < largeur && y < hauteur) 
 			return ((geneZombie ? !isZombieHere(x, y) : true) && plateau[y][x] == ' ');
@@ -173,14 +213,27 @@ public class Niveau {
 		return false;
 	}
 
+	/**
+	 * Renvoie si le joueur est arrivé à bon port, vivant.
+	 * @return Si le joueur est arrivé vivant
+	 */
 	public boolean isArrived() {
 		return (alive && xJoueur == xArrivee && yJoueur == yArrivee);
 	}
-
+	
+	/**
+	 * Renvoie si le joueur est encore vivant
+	 * @return Si le joueur est vivant ou non
+	 */
 	public boolean isDead() {
 		return !alive;
 	}
 
+	/**
+	 * Execute toutes les actions du niveau une fois que le joueur et les zombies ont joué.
+	 * Tue le joueur s'il est sur la même case qu'un zombie ou qu'un explosif
+	 * Et les explosifs explosent sur les zombies, faisant se supprimer l'explosif et le zombie
+	 */
 	public void levelActions() {
 		if (isZombieHere(xJoueur, yJoueur) || isExplosiveHere(xJoueur, yJoueur))
 			alive = false;
@@ -233,10 +286,28 @@ public class Niveau {
 	// Partie réservée au calcul du chemin
 	// ------------------------
 	
+	/**
+	 * Renvoie le chemin idéal entre les coordonnées de base et de cible en utilisant l'algorithme A*.
+	 * Ici, les zombies sont considérées comme un obstacle
+	 * @param xOrigine
+	 * @param yOrigine
+	 * @param xGoal
+	 * @param yGoal
+	 * @return Le Noeud cible qui possède récursivement des parents jusqu'à l'origine
+	 */
 	public Noeud chemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		return chemin(xOrigine, yOrigine, xGoal, yGoal, true);
 	}
 	
+	/**
+	 * Renvoie le chemin idéal entre les coordonnées de base et de cible en utilisant l'algorithme A*.
+	 * @param xOrigine
+	 * @param yOrigine
+	 * @param xGoal
+	 * @param yGoal
+	 * @param obstacles Si les zombies doivent être considérés comme des obtacles ou non
+	 * @return Le Noeud cible qui possède récursivement des parents jusqu'à l'origine
+	 */
 	public Noeud chemin(int xOrigine, int yOrigine, int xGoal, int yGoal, boolean obstacles) {
 		ArrayList<Noeud> ferme = new ArrayList<>();
 		ArrayList<Noeud> ouvert = new ArrayList<>();
@@ -278,10 +349,28 @@ public class Niveau {
 		return null;
 	}
 	
+	/**
+	 * Retourne l'ArrayList du chemin complet.
+	 * Les zombies sont considérés comme un obstacle.
+	 * @param xOrigine
+	 * @param yOrigine
+	 * @param xGoal
+	 * @param yGoal
+	 * @return Retourne la liste de toutes les étapes du chemin
+	 */
 	public ArrayList<Noeud> alChemin(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		return alChemin(xOrigine, yOrigine, xGoal, yGoal, true);
 	}
 	
+	/**
+	 * Retourne l'ArrayList du chemin complet.
+	 * @param xOrigine
+	 * @param yOrigine
+	 * @param xGoal
+	 * @param yGoal
+	 * @param obstacles Si les zombies sont considérés comme des obstacles ou non.
+	 * @return 
+	 */
 	public ArrayList<Noeud> alChemin(int xOrigine, int yOrigine, int xGoal, int yGoal, boolean obstacles) {
 		ArrayList<Noeud> chemin = new ArrayList<>();
 		Noeud n = chemin(xOrigine, yOrigine, xGoal, yGoal, obstacles);
@@ -294,6 +383,14 @@ public class Niveau {
 		return chemin;
 	}
 
+	/**
+	 * Renvoie le prochain déplacement pour une trajectoire optimale.
+	 * @param xOrigine
+	 * @param yOrigine
+	 * @param xGoal
+	 * @param yGoal
+	 * @return Le noeud vers lequel se déplacer. Null si aucun chemin possible.
+	 */
 	public Noeud nextMove(int xOrigine, int yOrigine, int xGoal, int yGoal) {
 		ArrayList<Noeud> chemin = alChemin(xOrigine, yOrigine, xGoal, yGoal);
 
@@ -303,6 +400,13 @@ public class Niveau {
 			return null;
 	}
 
+	/**
+	 * Renvoie un pointeur vers un objet correspondant à ces coordonnées dans l'ArrayList
+	 * @param al L'ArrayList à parcourir
+	 * @param x
+	 * @param y
+	 * @return Le Noeud correspondant aux coordonnées. Null s'il n'y en a pas
+	 */
 	public Noeud getNoeudAt(ArrayList<Noeud> al, int x, int y) {
 		for (Noeud n : al) 
 			if (n.x == x && n.y == y) 
@@ -311,6 +415,11 @@ public class Niveau {
 		return null;
 	}
 
+	/**
+	 * Renvoie le noeud avec la valeur f la plus petite de l'ArrayList.
+	 * @param ouverts L'arrayList à parcourir
+	 * @return Le noeud le plus petit sélectionné
+	 */
 	public Noeud plusPetitNoeud(ArrayList<Noeud> ouverts) {
 		Noeud noeudMin = new Noeud(10000, 10000, null);
 
@@ -321,6 +430,13 @@ public class Niveau {
 		return noeudMin;
 	}
 
+	/**
+	 * Renvoie les Noeuds voisins d'un noeud, à part les cases obstacle.
+	 * @param n Le Noeud où l'on doit regarder autout
+	 * @param diagonales Si l'on doit compter les cases en diagonales
+	 * @param obstacles Si nous comptons les zombies comme des obstacles ou non.
+	 * @return ArrayList de Noeuds correspondant aux critères en paramètre
+	 */
 	public ArrayList<Noeud> getVoisins(Noeud n, boolean diagonales, boolean obstacles) {
 		ArrayList<Noeud> retour = new ArrayList<>();
 		int[] xs = {n.x - 1, n.x, n.x, n.x + 1, n.x - 1, n.x + 1, n.x - 1, n.x + 1};
@@ -338,15 +454,30 @@ public class Niveau {
 	// ---
 	// Classes internes
 	// ---
+	
+	/**
+	 * Classe interne représentant le zombie.
+	 */
 	public class Zombie {
 
 		public int x, y, tour, champVision;
 		public boolean blocage;
-
+		
+		/**
+		 * Constructeur d'un zombie non bloquant.
+		 * @param x Colonne où est initialement le zombie
+		 * @param y Ligne où est initialement le zombie
+		 */
 		public Zombie(int x, int y) {
 			this(x, y, false);
 		}
 		
+		/**
+		 * Constructeur d'un zombie.
+		 * @param x Colonne où est initialement le zombie
+		 * @param y Ligne où est initialement le zombie
+		 * @param blocking Si le zombie est bloquant ou non.
+		 */
 		public Zombie(int x, int y, boolean blocking) {
 			this.x = x;
 			this.y = y;
@@ -355,6 +486,11 @@ public class Niveau {
 			this.blocage = blocking;
 		}
 
+		/**
+		 * Méthode bougeant le zombie afin d'atteindre la cible renseignée
+		 * @param x Colonne ciblée
+		 * @param y Ligne ciblée
+		 */
 		public void move(int x, int y) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
@@ -368,6 +504,13 @@ public class Niveau {
 			}
 		}
 		
+		/**
+		 * Engage le zombie dans une procédure bloquante s'il est bloquant.
+		 * @param xJoueur Colonne du joueur
+		 * @param yJoueur Ligne du joueur
+		 * @param xArrivee Colonne du but du joueur
+		 * @param yArrivee Ligne du but du joueur
+		 */
 		public void block(int xJoueur, int yJoueur, int xArrivee, int yArrivee) {
 			this.tour++;
 			this.tour %= (difficulte <= 2 ? 1 : 2);
@@ -390,11 +533,18 @@ public class Niveau {
 			}
 		}
 		
+		/**
+		 * Indique si le zombie est bloquant
+		 * @return Si le zombie est bloquant
+		 */
 		public boolean estBloquant() {
 			return this.blocage;
 		}
 	}
 
+	/**
+	 * Classe interne modélisant les noeuds.
+	 */
 	public class Noeud {
 
 		public int x;
@@ -403,6 +553,15 @@ public class Niveau {
 		public int distance;
 		public Noeud parent;
 
+		/**
+		 * Constructeur d'un objet Noeud s'appuyant sur les informations du niveau afin de se paramétrer.
+		 * @param x La colonne du noeud
+		 * @param y La ligne du noeud
+		 * @param parent Le Noeud parent à partir duquel on accède à ce noeud
+		 * @param diagonale Si le parent est en diagonale ou non
+		 * @param xCible La colonne ciblée
+		 * @param yCible La ligne ciblée
+		 */
 		public Noeud(int x, int y, Noeud parent, boolean diagonale, int xCible, int yCible) {
 			this.x = x;
 			this.y = y;
@@ -411,14 +570,34 @@ public class Niveau {
 			this.parent = parent;
 		}
 		
+		/**
+		 * Constructeur d'un objet Noeud s'appuyant sur les informations du niveau afin de se paramétrer.
+		 * La cible ici est le joueur.
+		 * @param x La colonne du noeud
+		 * @param y La ligne du noeud
+		 * @param parent Le Noeud parent à partir duquel on accède à ce noeud
+		 * @param diagonale Si le parent est en diagonale ou non
+		 */
 		public Noeud(int x, int y, Noeud parent, boolean diagonale) {
 			this(x, y, parent, diagonale, xJoueur, yJoueur);
 		}
 
+		/**
+		 * Constructeur d'un objet Noeud s'appuyant sur les informations du niveau afin de se paramétrer.
+		 * La cible ici est le joueur, et le parent n'est pas en diagonale.
+		 * @param x La colonne du noeud
+		 * @param y La ligne du noeud
+		 * @param parent Le Noeud parent à partir duquel on accède à ce noeud
+		 */
 		public Noeud(int x, int y, Noeud parent) {
 			this(x, y, parent, false);
 		}
 
+		/**
+		 * Renvoie la valeur f du Noeud actuel.
+		 * Celle-ci s'appuie sur le cout du noeud, de la distance euclidienne, et sur la valeur f des noeuds parents.
+		 * @return La valeur f du noeud.
+		 */
 		public int f() {
 			return cout + distance + (parent == null ? 0 : parent.f());
 		}
@@ -430,11 +609,19 @@ public class Niveau {
 
 	}
 
+	/**
+	 * Simple classe de TNT.
+	 */
 	public class TNT {
 
 		public int x;
 		public int y;
 
+		/**
+		 * Constructeur par défaut d'un objet TNT
+		 * @param x La colonne ou est placée la TNT
+		 * @param y La ligne ou est placée la TNT
+		 */
 		public TNT(int x, int y) {
 			this.x = x;
 			this.y = y;
