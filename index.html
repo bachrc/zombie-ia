@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Ne vous faites pas manger par les zombies by totorolepacha</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Ne vous faites pas manger par les zombies</h1>
+          <h2>Projet d&#39;IA ayant pour but de pratiquer le path-finding avec l&#39;algorithme A*</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/totorolepacha/zombie-ia/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/totorolepacha/zombie-ia/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/totorolepacha/zombie-ia" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="ne-vous-faites-pas-manger-par-les-zombies" class="anchor" href="#ne-vous-faites-pas-manger-par-les-zombies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ne vous faites pas manger par les zombies</h1>
+
+<p>"Ne vous faites pas manger par les zombies" est un jeu révolutionnaire en console où le but est de combattre une invasion zombie qui se déroule dans votre ordinateur ! Luttez contre la fragmentation de votre disque dur en incarnant votre disque dur faces aux MECHANTES INTERFERENCES.</p>
+
+<p>Voilà le synopsis global. Plus précisément, il s'agit d'un projet d'Intelligence Artificielle sous la tutelle de M. DUTOT, M. DEMARE et de M. OLIVIER, tous trois professeurs de cette même matière. Le sujet est simple : il faut créer l'Intelligence Artificielle contre lesquels vous devez vous confronter.</p>
+
+<h2>
+<a id="sommaire" class="anchor" href="#sommaire" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sommaire</h2>
+
+
+
+<ul>
+<li>Jouer
+
+<ul>
+<li>Compiler à partir des sources</li>
+<li>Téléchargement</li>
+</ul>
+</li>
+<li>Le jeu
+
+<ul>
+<li>Présentation</li>
+<li>La lecture de niveaux</li>
+<li>Le moteur de messages et de choix</li>
+<li>Intelligence des Zombies
+
+<ul>
+<li>Path-finding</li>
+<li>Zombies affamés</li>
+<li>Zombies bloquants</li>
+</ul>
+</li>
+<li>Cases de TNT</li>
+</ul>
+</li>
+<li>Conclusion</li>
+</ul>
+
+
+
+<h2>
+<a id="jouer" class="anchor" href="#jouer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jouer</h2>
+
+<p>Il a deux manières de jouer au jeu en question. L'une pour les gens à l'aise avec la ligne de commande, l'autre pour les feignants, comme la majorité d'entre nous.</p>
+
+<p>Il est important de préciser que deux versions du jeu sont disponibles, selon la compatibilité de votre terminal :</p>
+
+<ul>
+<li>Une version avec coloration ANSI pour rajouter un peu de couleur lors du jeu</li>
+<li>Une version sans couleur pour les terminaux ne supportant pas l'ANSI</li>
+</ul>
+
+<h3>
+<a id="compiler-à-partir-des-sources" class="anchor" href="#compiler-%C3%A0-partir-des-sources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compiler à partir des sources</h3>
+
+<p>Pour télécharger le jeu, il vous suffit de posséder, déjà, Java avec un JRE &gt;= 6, et git. Il vous suffit de rentrer les commandes suivantes afin de le télécharger :</p>
+
+<pre><code>git clone https://github.com/totorolepacha/zombie-ia.git
+cd zombie-ia
+</code></pre>
+
+<p>Et d'ensuite choisir la version qui vous convient le mieux :</p>
+
+<ul>
+<li>"v1.2" pour la version avec coloration ANSI</li>
+<li>"v1.2-noansi" pour la version sans coloration ANSI</li>
+</ul>
+
+<p>Et d'ensuite exécuter la commande suivante, en remplaçant <code>&lt;version&gt;</code> par la version choisie juste avant : </p>
+
+<pre><code>git checkout tags/&lt;version&gt;
+</code></pre>
+
+<p>Il vous suffit ensuite de compiler les sources en oubliant pas d'inclure le jar de ressources d'Oracle, présent dans le dossier.</p>
+
+<h3>
+<a id="téléchargement" class="anchor" href="#t%C3%A9l%C3%A9chargement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Téléchargement</h3>
+
+<p>Vous pouvez également télécharger les sources pré-compilées, prêtes à jouer ci-dessous :</p>
+
+<ul>
+<li>Version 1.2 : <a href="https://github.com/totorolepacha/zombie-ia/releases/download/v1.2/v1.2.zip">lien</a>
+</li>
+<li>Version 1.2 (no ansi) : <a href="https://github.com/totorolepacha/zombie-ia/releases/download/v1.2-noansi/v1.2-noansi.zip">lien</a>
+</li>
+</ul>
+
+<p>Vous n'avez ainsi qu'à extraire l'archive dans un dossier, et lancer le fichier correspondant à votre OS. Exécutez <code>launch.bat</code> si vous êtes sur Windows, et <code>launch.sh</code> depuis une distribution Linux.</p>
+
+<p>Ces deux fichiers possèdent le même contenu, soit la ligne de commande suivante : </p>
+
+<pre><code>java -jar ZombiesIA.jar
+</code></pre>
+
+<p>Alors vérifiez que le dossier contenant vos binaires de Java est bien compris dans les variables d'environnement de votre système.</p>
+
+<h2>
+<a id="le-jeu" class="anchor" href="#le-jeu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Le jeu</h2>
+
+<h3>
+<a id="présentation" class="anchor" href="#pr%C3%A9sentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Présentation</h3>
+
+<p>Le jeu, afin de rester concentré sur l'objectif principal qui est l'intelligence artificielle des zombies, ne possède qu'un petit but. Vous devez vous déplacer d'un point A jusqu'à un point B, en évitant de mourir sur le chemin.</p>
+
+<p>Avant d'aller plus loin, je vous suggère de tout d'abord jouer au jeu, car ce qui suit risque de vous enlever toute la fabuleuse intrigue scénaristique du jeu.</p>
+
+<p>Je vous aurais prévenu.</p>
+
+<p>Ce jeu dévoile petit à petit de nouveau éléments de gameplay au fur et à mesure des 7 niveaux proposés par le jeu.
+Bien sûr, en modifiant les sources, vous pouvez ajouter de nouveaux niveaux facilement. Il suffit d'un simple fichier texte, et d'un appel dans la fonction main.</p>
+
+<h3>
+<a id="la-lecture-de-niveaux" class="anchor" href="#la-lecture-de-niveaux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>La lecture de niveaux</h3>
+
+<p>La lecture de niveau se fait actuellement par simple parcours de fichier texte. Dans le package "niveaux", il suffit de créer un niveau du type <code>niveau*.txt</code>, en respectant quelques consignes, dont une ligne d'entête respectant la syntaxe : </p>
+
+<pre><code>&lt;hauteur&gt; &lt;largeur&gt; &lt;difficulté&gt; &lt;odorat&gt;
+</code></pre>
+
+<p>Ces valeurs correspondent à :</p>
+
+<ul>
+<li>Hauteur : La hauteur en cases du niveau</li>
+<li>Largeur : La largeur du niveau en cases</li>
+<li>Difficulté : Le degré de difficulté des zombies, peut varier entre 1 et 4. Fonctionnement détaillé dans la partie de l'Intelligence des zombies.</li>
+<li>Odorat : L'odorat des zombies. Cette valeur sera aussi détaillée plus tard.</li>
+</ul>
+
+<p>De plus, les valeurs détaillant le niveaux se doivent de respecter certaines contraintes. Il y a plusieurs types de cases :</p>
+
+<ul>
+<li>La case de départ du Joueur, représentée par un <code>J</code>
+</li>
+<li>Une case où se situe un simple zombie affamé, représentée par un <code>Z</code>
+</li>
+<li>Une case où se situe un zombie bloquant, représentée par un <code>B</code>
+</li>
+<li>Une case de mur, représentée soit par <code>|</code> ou <code>_</code>
+</li>
+<li>Une case d'arrivée est symbolisée par la lettre <code>A</code>
+</li>
+<li>Une case remplie d'explosifs est représentée comme ceci : <code>T</code>
+</li>
+<li>Et les cases vides de la sorte : <code>-</code>
+</li>
+</ul>
+
+<p>Par exemple, dans le jeu, voici le <code>niveau1.txt</code> renseigné :</p>
+
+<pre><code>15 15 4 20
+---------A-----
+---------------
+---------------
+---------------
+---------------
+---------------
+---------------
+---------------
+------_______--
+------|--------
+------|--------
+------|Z-------
+------|--------
+----J-|------Z-
+------|--------
+</code></pre>
+
+<h3>
+<a id="le-moteur-de-messages-et-de-choix" class="anchor" href="#le-moteur-de-messages-et-de-choix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Le moteur de messages et de choix</h3>
+
+<p>Afin de dynamiser un peu le tout, car après tout, un jeu en console reste un peu austère, j'ai créé un moteur d'affichage dynamique de messages, afin aussi d'intéragir avec le joueur. Même si dans le cas présent, les interactions n'y sont que minimes, vu que nous devons nous concentrer après tout sur l'intelligence des zombies.</p>
+
+<p>L'intégralité du contenu de ce moteur est disponible dans le fichier <a href="src/zombiesia/Messages.java">Messages.java</a>. </p>
+
+<p>L'essentiel de la classe se situe à la classe <a href="src/zombiesia/Messages.java#L130">introArray</a>. En effet, cette méthode affiche dynamiquement tous les messages qui lui sont donnés en paramètre, la durée variant selon la longueur du texte.</p>
+
+<p>Les différents groupes de messages sont stockés dans un enum nommé <a href="src/zombiesia/Messages.java#L24">GroupeMessages</a>. Ce sont des groupes de messages qui sont de toutes manières affichés dans le jeu à un moment ou à un autre.</p>
+
+<p>Cependant, certains messages ne peuvent être affichées que dans certains contextes. Nous avons donc un enum stockant tous les types de contextes, c'est <a href="src/zombiesia/Messages.java#L56">TypeReponse</a>. Et à partir de ce contexte, la méthode <a href="src/zombiesia/Messages.java#L83">reponse()</a> réagira différemment en fonction de la variable renseignée. Par exemple, si lors du contexte <code>TypeReponse.Niveau2</code>, la partie du joueur renvoie "false" (donc qu'il a perdu), le jeu réagira différemment que si le joueur avait gagné.</p>
+
+<p>Le jeu peut également réagir différemment en fonction d'une saisie utilisateur.</p>
+
+<h3>
+<a id="intelligence-des-zombies" class="anchor" href="#intelligence-des-zombies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Intelligence des Zombies</h3>
+
+<h4>
+<a id="path-finding" class="anchor" href="#path-finding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Path-finding</h4>
+
+<p>Afin que les zombies puissent traquer les joueurs, il faut que les zombies puissent traquer le joueur. Pour cela, le choix a été axé sur l'algorithme A*. Qui offre de très bonnes performances en terme de rapidité, et en termes de qualité.</p>
+
+<p>Je suppose que l'on vous a décrit plus d'une dizaine de fois le fonctionnement de l'algorithme A*. Donc permettez-moi de vous la décrire encore une fois, assez rapidement.</p>
+
+<p>Le traitement du calcul du chemin se trouve dans le fichier <a href="src/zombiesia/Niveau.java#L316">Niveau.java</a>. En effet, pour calculer le chemin optimal, nous n'avons besoin que de trois choses :</p>
+
+<ul>
+<li>Les coordonnées de départ</li>
+<li>Les coordonnées cible</li>
+<li>Le plateau, ses obstacles, ses spécificités</li>
+</ul>
+
+<p>C'est donc à partir de ces éléments que nous pouvons écrire l'algorithme principal, contenu dans la méthode <a href="src/zombiesia/Niveau.java#L316">chemin()</a> :</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-smi">Noeud</span> chemin(<span class="pl-k">int</span> xOrigine, <span class="pl-k">int</span> yOrigine, <span class="pl-k">int</span> xGoal, <span class="pl-k">int</span> yGoal, <span class="pl-k">boolean</span> obstacles) {
+    <span class="pl-k">ArrayList&lt;<span class="pl-smi">Noeud</span>&gt;</span> ferme <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">ArrayList&lt;&gt;</span>();
+    <span class="pl-k">ArrayList&lt;<span class="pl-smi">Noeud</span>&gt;</span> ouvert <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">ArrayList&lt;&gt;</span>();
+    <span class="pl-k">ArrayList&lt;<span class="pl-smi">Noeud</span>&gt;</span> voisins;
+    ouvert<span class="pl-k">.</span>add(<span class="pl-k">new</span> <span class="pl-smi">Noeud</span>(xOrigine, yOrigine, <span class="pl-c1">null</span>));</pre></div>
+
+<p>Nous allons tout d'abord définir les quelques listes qui vont contenir les noeuds ouverts et les noeuds fermés.</p>
+
+<p>Les noeuds ouverts sont les noeuds potentiellement ouvrants vers un chemin optimal, qui n'ont pas encore été examinés. Les noeuds fermés sont ceux qui ont déjà été examinés.</p>
+
+<p>Nous ajoutons donc la position de départ aux noeuds ouverts.</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">while</span> (<span class="pl-k">!</span>ouvert<span class="pl-k">.</span>isEmpty()) {
+        <span class="pl-smi">Noeud</span> n <span class="pl-k">=</span> plusPetitNoeud(ouvert);
+        ouvert<span class="pl-k">.</span>remove(n);
+        ferme<span class="pl-k">.</span>add(n);
+
+        voisins <span class="pl-k">=</span> getVoisins(n, (<span class="pl-v">this</span><span class="pl-k">.</span>difficulte <span class="pl-k">%</span> <span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>), obstacles);</pre></div>
+
+<p>Tant que nous avons des noeuds ouverts, nous allons à chaque fois sélectionner le noeud qui possède le chemin le plus court non examiné jusqu'à présent, afin de l'examiner, lui, et ses voisins. Vu que nous avons examiné ce noeud, nous le mettons dans la liste des noeuds fermés.</p>
+
+<p>Si la difficulté courante est soit de 1, soit de 3, les cases en diagonale sont aussi prises en compte en tant que voisines. Cependant, le coût des cases en diagonale est légèrement plus élevé que celui des déplacements latéraux.</p>
+
+<div class="highlight highlight-source-java"><pre>        <span class="pl-k">for</span> (<span class="pl-smi">Noeud</span> v <span class="pl-k">:</span> voisins) {
+            <span class="pl-k">if</span> (v<span class="pl-k">.</span>x <span class="pl-k">==</span> xGoal <span class="pl-k">&amp;&amp;</span> v<span class="pl-k">.</span>y <span class="pl-k">==</span> yGoal) {
+                <span class="pl-k">return</span> v;</pre></div>
+
+<p>Nous parcourons ensuite tous les voisins de ce noeud. Tous ces noeuds voisins sont, en mémoire, recréés avec le noeud courant comme parent. Si l'un d'entre eux correspond au noeud cible, c'est bon, le chemin est accompli ! Nous retournons donc le noeud trouvé à l'utilisateur. Ce noeud possède pour parent le noeud par lequel il a été accédé, et ce récursivement jusqu'au noeud d'origine. Nous avons donc le trajet dans sa totalité.</p>
+
+<div class="highlight highlight-source-java"><pre>            } <span class="pl-k">else</span> {
+                <span class="pl-k">if</span> (getNoeudAt(ouvert, v<span class="pl-k">.</span>x, v<span class="pl-k">.</span>y) <span class="pl-k">==</span> <span class="pl-c1">null</span> <span class="pl-k">&amp;&amp;</span> getNoeudAt(ferme, v<span class="pl-k">.</span>x, v<span class="pl-k">.</span>y) <span class="pl-k">==</span> <span class="pl-c1">null</span>) {
+                    ouvert<span class="pl-k">.</span>add(v);</pre></div>
+
+<p>Si le voisin n'existe dans aucune des listes, c'est qu'il n'a jamais été découvert. On l'ajoute à la liste des noeuds ouverts.</p>
+
+<div class="highlight highlight-source-java"><pre>                } <span class="pl-k">else</span> {
+                    <span class="pl-smi">Noeud</span> actuel;
+                    <span class="pl-k">if</span> ((actuel <span class="pl-k">=</span> getNoeudAt(ferme, v<span class="pl-k">.</span>x, v<span class="pl-k">.</span>y)) <span class="pl-k">!=</span> <span class="pl-c1">null</span>) {
+                        <span class="pl-k">if</span> (actuel<span class="pl-k">.</span>f() <span class="pl-k">&gt;</span> v<span class="pl-k">.</span>f()) {
+                            ferme<span class="pl-k">.</span>remove(actuel);
+                            ouvert<span class="pl-k">.</span>add(v);
+                        }
+                    } <span class="pl-k">else</span> <span class="pl-k">if</span> ((actuel <span class="pl-k">=</span> getNoeudAt(ouvert, v<span class="pl-k">.</span>x, v<span class="pl-k">.</span>y)) <span class="pl-k">!=</span> <span class="pl-c1">null</span>) {
+                        <span class="pl-k">if</span> (actuel<span class="pl-k">.</span>f() <span class="pl-k">&gt;</span> v<span class="pl-k">.</span>f()) {
+                            ouvert<span class="pl-k">.</span>remove(actuel);
+                            ouvert<span class="pl-k">.</span>add(v);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    <span class="pl-k">return</span> <span class="pl-c1">null</span>;
+}</pre></div>
+
+<p>S'il existe cependant, c'est une autre paire de manches. Si un noeud avec les mêmes coordonnées existe dans la liste des Noeuds déjà examinés, et que le nouveau Noeud a un trajet plus avantageux que celui déjà examiné, on supprime le noeud déjà examiné des noeuds examinés, et on ajoute le nouveau dans la liste des noeuds à examiner !</p>
+
+<p>Nous continuons la procédure jusqu'à épuisement des noeuds ouverts. Si, un jour, il n'y a plus de noeuds à examiner, c'est que le trajet est impossible. Nous retournons donc null.</p>
+
+<h4>
+<a id="zombies-affamés" class="anchor" href="#zombies-affam%C3%A9s" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Zombies affamés</h4>
+
+<p>Nous avons donc deux types de zombies. Les zombies les plus basiques comme on les connaît partout, sont les zombies férus de cervelle. Leur seule stratégie sera ici de vous dévorer le cerveau. Ils ne feront que prendre le joueur pour cible, mais ce avec quelques subtilités. Principalement deux :</p>
+
+<ul>
+<li>La difficulté du jeu : Il existe quatre difficultés différentes dans ce jeu, toutes renseignables via l'entête d'un niveau.
+
+<ul>
+<li>Difficulté 4 : le zombie ne se déplacera que tous les deux tours, et seulement dans les 4 directions latérales haut/bas/gauche/droite.</li>
+<li>Difficulté 3 : le zombie ne se déplacera que tous les deux tours, mais cette fois-ci dans les 8 directions l'entourant.</li>
+<li>Difficulté 2 : Le zombie se déplace tous les tours, mais seulement dans les 4 directions l'entourant.</li>
+<li>Difficulté 1 : Difficulté la plus élevée : les zombies se déplacent dans tous les sens, et ce tous les tours.</li>
+</ul>
+</li>
+<li>L'odorat du zombie : Un indice d'odorat est spécifié dans l'entête de chaque niveau. Cet indice représente la distance maximum à la laquelle le zombie peut sentir le Joueur 1. Si le nombre d'étapes du trajet via A* est supérieur à l'odorat du zombie, le zombie ne bougera pas.</li>
+</ul>
+
+<h4>
+<a id="zombies-bloquants" class="anchor" href="#zombies-bloquants" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Zombies bloquants</h4>
+
+<p>Les zombies bloquants sont un peu différents des zombies normaux. En effet, leur première cible ne sera pas le joueur. Leur but est de s'interposer entre le joueur et l'arrivée.</p>
+
+<p>En effet, dès que le zombie détectera l'humain, il cherchera à se mettre exactement au milieu du chemin entre l'humain et l'arrivée. Et dès que l'humain sera dangereusement près de l'arrivée, le zombie prendra pour cible l'humain.</p>
+
+<p>Le zombie bloquant est soumis aux mêmes règles de difficulté et d'odorat que les zombies affamés. Même s'il est un peu plus intelligent que la masse, cela reste un zombie.</p>
+
+<p>Un seul zombie bloquant a été placé dans le jeu : le dernier zombie du dernier niveau : le niveau 7.</p>
+
+<h3>
+<a id="cases-de-tnt" class="anchor" href="#cases-de-tnt" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cases de TNT</h3>
+
+<p>Les cases d'explosifs sont un petit élément de gameplay rajouté afin de permettre au joueur de se sortir de situations complexes, en prédisant l'intelligence des zombies afin de les faire s'exterminer dessus. Une case d'explosifs aura un cout plus élevé qu'une case normale. Ce qui veut dire qu'un zombie ayant le choix entre une case de TNT et une case normale pour une même distance, tendra à aller vers la case normale. Un petit sixième sens, mais pas trop. Cela reste un zombie.</p>
+
+<h2>
+<a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h2>
+
+<p>En espérant que le jeu vous ait plu, et que l'intelligence de ces mêmes zombies vous ait convenus. N'hésitez pas à remplir le petit questionnaire en fin de jeu.</p>
+        </section>
+
+        <footer>
+          Ne vous faites pas manger par les zombies is maintained by <a href="https://github.com/totorolepacha">totorolepacha</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
